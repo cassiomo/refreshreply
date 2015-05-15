@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">RefreshReply</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_ad_details">Ad Details</string>
+    <string name="title_activity_create_report">New Report</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ad_location_label">Ad Location</string>
+    <string name="ad_last_updated_date_label">Last Updated Date</string>
+    <string name="create_report">CREATE REPORT</string>
+    <string name="title_activity_demo_camera">DemoCameraActivity</string>
+    <string name="title_activity_demo_push">DemoPushActivity</string>
+    <string name="title_activity_demo_sms">DemoSMSActivity</string>
+    <string name="report_title_label">Report Title</string>
+    <string name="report_title_hint">Badly Broken Ad</string>
+    <string name="ad_status_label">Status</string>
+    <string name="report_notes_label">Add Notes</string>
+    <string name="report_notes_hint">Notes for this report.</string>
+    <string name="submit_report">SUBMIT NEW REPORT</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="signin_text">LOG IN</string>
+    <string name="create_account_text">CREATE ACCOUNT</string>
+    <string name="title_activity_sign_in">SignInActivity</string>
+    <string name="default_ad_flavor_text">Part of the MSABI Mkusa School System</string>
+    <string name="sort_by">Sort by</string>
+    <string name="title">RefreshReply</string>
+    <string name="title_activity_ad_browser">AdBrowserActivity</string>
+    <string name="message_hint">Say anything</string>
+    <string name="send">Send</string>
+    <string name="profile_me">My Profile Pic</string>
+    <string name="profile_other">Other profile pic</string>
+
+    <string name="carddemo_extras_title_base_twowayview">TwoWayView</string>
+    <string name="carddemo_extras_title_staggered2viewway">TwoWay - Staggered Grid</string>
+    <string name="carddemo_extras_title_staggered">StaggeredGrid</string>
+    <string name="carddemo_extras_title_base_staggered">Base StaggeredGrid</string>
+    <string name="carddemo_extras_title_animate_staggered">Animate StaggeredGrid</string>
+    <string name="carddemo_extras_title_stag">More details...</string>
+
+
+
+</resources>

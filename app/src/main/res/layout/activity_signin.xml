@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <VideoView
+        android:id="@+id/vvMovieBackground"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="6000px"
+        android:layout_height="fill_parent" />
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:textSize="20dp"
+        android:textColor="@color/offwhite"
+        android:text="@string/title" />
+
+    <EditText
+        android:id="@+id/etUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_underline"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="24dp"
+        android:gravity="left|bottom"
+        android:textColor="@color/offwhite"
+        android:textColorHint="@color/offwhite"
+        android:hint="@string/username_hint"
+        android:inputType="textAutoComplete"
+        android:textSize="28sp"
+        android:singleLine="true">
+        <requestFocus/>
+    </EditText>
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_underline"
+        android:textColor="@color/offwhite"
+        android:textColorHint="@color/offwhite"
+        android:ems="10"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="left|bottom"
+        android:hint="@string/password_hint"
+        android:singleLine="true"
+        android:textSize="28sp"
+        android:inputType="textPassword"
+        android:layout_below="@+id/etUsername"
+        android:layout_alignStart="@+id/etUsername"
+        android:layout_alignEnd="@+id/etUsername"/>
+
+    <Button
+        android:id="@+id/btnSignIn"
+        android:layout_width="170dp"
+        android:layout_height="60dp"
+        android:background="@drawable/new_report"
+        android:focusable="false"
+        android:text="@string/signin_text"
+        android:onClick="onSignIn"
+        android:textColor="@color/offwhite"
+        android:textSize="14sp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>
+
+
+    <!--
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context="com.xzero.refreshreply.activities.SignInActivity">
+
+        <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+    -->
