@@ -48,9 +48,53 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.AdBrowserActivity"
+            android:name=".activities.AdActivity"
             android:label="@string/title_activity_ad_browser" >
         </activity>
+        <activity
+            android:name=".activities.AdActivity"
+            android:label="@string/title_activity_ad_browser" >
+        </activity>
+
+
+        <!-- start parse push service -->
+        <service android:name="com.parse.PushService" />
+        <receiver android:name="com.parse.ParseBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.RECEIVE_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.xzero.refreshreply.notification.MyPushOpenReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.parse.push.intent.RECEIVE" />
+                <action android:name="com.parse.push.intent.DELETE" />
+                <action android:name="com.parse.push.intent.OPEN" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <!--
+                  IMPORTANT: Change "com.parse.starter" to match your app's package name.
+                -->
+                <category android:name="com.xzero.refreshreply" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.xzero.refreshreply.notification.MyCustomReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="SEND_PUSH" />
+            </intent-filter>
+        </receiver>
+        <!-- end parse push service -->
+
     </application>
 
 </manifest>

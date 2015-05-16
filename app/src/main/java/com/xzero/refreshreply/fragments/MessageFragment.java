@@ -1,10 +1,10 @@
 package com.xzero.refreshreply.fragments;
 
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
-//import android.support.v4.app.Fragment;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,19 +15,27 @@ import android.widget.ListView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.xzero.refreshreply.R;
-import com.xzero.refreshreply.activities.ChatActivity;
 import com.xzero.refreshreply.adapters.ChatListAdapter;
+import com.xzero.refreshreply.models.Ad;
 import com.xzero.refreshreply.models.Message;
+import com.xzero.refreshreply.notification.MyCustomReceiver;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+
+//import android.support.v4.app.Fragment;
 
 public class MessageFragment extends Fragment  {
 
@@ -38,11 +46,11 @@ public class MessageFragment extends Fragment  {
     @InjectView(R.id.lvChat)
     ListView lvChat;
 
-    private static final String TAG = ChatActivity.class.getName();
+    private static final String TAG = MessageFragment.class.getName();
     private static String sUserId;
 
     public static final String USER_ID_KEY = "userId";
-    private static final int MAX_CHAT_MESSAGES_TO_SHOW = 50;
+    private static final int MAX_CHAT_MESSAGES_TO_SHOW = 1000;
 
     //private EditText etMessage;
     //private Button btSend;
@@ -52,22 +60,11 @@ public class MessageFragment extends Fragment  {
 
     private ArrayList<Message> mMessages;
     private ChatListAdapter mAdapter;
+    private Ad currentInterestedAd;
 
     public static MessageFragment newInstance() {
         return new MessageFragment();
     }
-
-//    @Override
-//    public void onResume() {
-//        Log.d("DBG", "Message fragment onResume");
-//        super.onResume();
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        Log.d("DBG", "Message fragment onPause");
-//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +72,7 @@ public class MessageFragment extends Fragment  {
 
         super.onCreate(savedInstanceState);
         startWithCurrentUser();
-        // Run the runnable object defined every 100ms
+       // Run the runnable object defined every 100ms
        handler.postDelayed(runnable, 100);
     }
 
@@ -117,6 +114,21 @@ public class MessageFragment extends Fragment  {
                     mMessages.addAll(messages);
                     mAdapter.notifyDataSetChanged();
                     lvChat.invalidate();
+                    if (messages.size() > 0 ) {
+                        String senderId = messages.get(messages.size() - 1).getUserId();
+                        Log.d("message userId", senderId);
+                        Log.d("current userId", sUserId);
+                        if (!sUserId.equals(senderId)) {
+                            Log.d("FromYou", "FromYou");
+                            if (messages.get(messages.size() - 1).getBody().contains("when")) {
+                                Log.d("Found when", "Found when");
+                                // pop up the map and log the time to calendar
+                            }
+                        } else {
+                            Log.d("FromMe", "FromMe");
+                        }
+                    }
+
                 } else {
                     Log.d("message", "Error: " + e.getMessage());
                 }
@@ -133,17 +145,7 @@ public class MessageFragment extends Fragment  {
             @Override
             public void onClick(View v) {
                 String body = etMessage.getText().toString();
-                // Use Message model to create new messages now
-                Message message = new Message();
-                message.setUserId(sUserId);
-                message.setBody(body);
-                message.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        receiveMessage();
-                    }
-                });
-                etMessage.setText("");
+                saveMessageInBackground(body, null);
 
 //                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 //                imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
@@ -151,14 +153,71 @@ public class MessageFragment extends Fragment  {
         });
     }
 
+    private void saveMessageInBackground(final String body, final Ad ad) {
+        Message message = new Message();
+        message.setUserId(sUserId);
+        message.setBody(body);
+        message.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                receiveMessage();
+
+                if (ad !=null) {
+                    // send Push notification
+                    sendPush(body, ad);
+                }
+            }
+        });
+        etMessage.setText("");
+    }
+
+    private void sendPush(String body, Ad ad) {
+
+        JSONObject obj;
+        try {
+            obj = new JSONObject();
+            obj.put("alert", "New Sale");
+            obj.put("action", MyCustomReceiver.intentAction);
+            obj.put("adId", ad.getObjectId());
+
+            ParsePush push = new ParsePush();
+            ParseQuery query = ParseInstallation.getQuery();
+
+            // Push the notification to Android users
+            query.whereEqualTo("deviceType", "android");
+            push.setQuery(query);
+            push.setData(obj);
+            push.sendInBackground();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Get the userId from the cached currentUser object
     private void startWithCurrentUser() {
         sUserId = ParseUser.getCurrentUser().getObjectId();
         //setupMessagePosting();
     }
-//
-//    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//    }
+
+    public void setCurrentInterestedAd(Ad ad) {
+        String body = "Interested " + ad.getDescription() + " When?";
+        saveMessageInBackground(body, ad);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onResume() {
+        Log.d("DBG", "Message fragment onResume");
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("DBG", "Message fragment onPause");
+    }
 }

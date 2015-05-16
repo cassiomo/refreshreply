@@ -1,9 +1,13 @@
 package com.xzero.refreshreply.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +22,8 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.xzero.refreshreply.R;
 import com.xzero.refreshreply.helpers.NetworkUtil;
+import com.xzero.refreshreply.models.Ad;
+import com.xzero.refreshreply.notification.MyCustomReceiver;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -33,12 +39,52 @@ public class SignInActivity extends ActionBarActivity {
     private String username;
     private String password;
 
+    private boolean isFromPush;
+
+    private Ad ad;
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Toast.makeText(getApplicationContext(), "onReceive invoked!", Toast.LENGTH_LONG).show();
+        }
+    };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         //getActionBar().hide();
         ButterKnife.inject(this);
+
+        // hack
+        isFromPush = false;
+        String adId = getIntent().getStringExtra("adId");
+
+        // coming from the message application
+        if (adId == null) {
+            // coming from the push open
+            Bundle extras = getIntent().getExtras();
+
+            if (extras != null) {
+                isFromPush = true;
+                ad = (Ad) extras.getSerializable("ad");
+                if (ad != null) {
+                    adId = ad.getObjectId();
+                }
+            }
+        } else {
+            isFromPush = true;
+        }
 
         final VideoView mVideoView = (VideoView) findViewById(R.id.vvMovieBackground);
         mVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.reply));
@@ -64,10 +110,15 @@ public class SignInActivity extends ActionBarActivity {
         final ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             Log.d("debug", "Current user is " + currentUser.toString());
-            startActivity(new Intent(getApplicationContext(), AdBrowserActivity.class));
+            Intent intent = new Intent(getApplicationContext(), AdActivity.class);
+            intent.putExtra("isFromPush", isFromPush);
+            startActivity(intent);
         } else {
             Log.d("debug", "No user logged in!");
         }
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, new IntentFilter(MyCustomReceiver.intentAction));
+
     }
 
     public void onSignIn(View v) {
@@ -94,7 +145,7 @@ public class SignInActivity extends ActionBarActivity {
             public void done(ParseUser parseUser, ParseException e) {
                 if (parseUser != null) {
                     Log.d("Info", "Current Parse User: " + ParseUser.getCurrentUser().toString());
-                    startActivity(new Intent(getApplicationContext(), AdBrowserActivity.class));
+                    startActivity(new Intent(getApplicationContext(), AdActivity.class));
                 } else {
                     pbLoading.setVisibility(ProgressBar.INVISIBLE);
                     if (e != null) {

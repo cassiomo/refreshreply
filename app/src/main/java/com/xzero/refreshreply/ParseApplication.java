@@ -3,7 +3,10 @@ package com.xzero.refreshreply;
 import android.app.Application;
 
 import com.parse.Parse;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.PushService;
+import com.xzero.refreshreply.activities.SignInActivity;
 import com.xzero.refreshreply.models.Ad;
 import com.xzero.refreshreply.models.Message;
 
@@ -19,8 +22,10 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(Message.class);
 
         Parse.initialize(this, "iySQdLjCiKkwnV9LCIRbFkXrGd90ds4V1rY9QHRv", "WxmgKcnzutrTDq1C2q5wAy5Zbw3rYUnUTcSEJwp7");
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+        Parse.setLogLevel(Parse.LOG_LEVEL_VERBOSE);
 
-        //PushService.setDefaultPushCallback(this, SignInActivity.class);
+        PushService.setDefaultPushCallback(this, SignInActivity.class);
 
         // only one time installation:
 /*

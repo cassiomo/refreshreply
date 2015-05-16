@@ -5,15 +5,33 @@ import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
+import java.io.Serializable;
+
 
 @ParseClassName("Ad")
-public class Ad extends ParseObject {
+public class Ad extends ParseObject implements Serializable {
 
     public static final String SOLD = "Sold";
     public static final String SALE = "Sale";
 
     public Ad() {
 
+    }
+
+    public void setTitle(String title) {
+        put("title", title) ;
+    }
+
+    public String getTitle() {
+        return getString("title");
+    }
+
+    public void setPrice(String price) {
+        put("price", price) ;
+    }
+
+    public String getPrice() {
+        return getString("price");
     }
 
     public ParseGeoPoint getLocation() {
