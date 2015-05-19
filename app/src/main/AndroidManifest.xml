@@ -51,10 +51,6 @@
             android:name=".activities.AdActivity"
             android:label="@string/title_activity_ad_browser" >
         </activity>
-        <activity
-            android:name=".activities.AdActivity"
-            android:label="@string/title_activity_ad_browser" >
-        </activity>
 
 
         <!-- start parse push service -->
@@ -94,6 +90,13 @@
             </intent-filter>
         </receiver>
         <!-- end parse push service -->
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyC5SB1nQCsUJkY0_gUiBonZsIdsGPZqWMc" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
     </application>
 

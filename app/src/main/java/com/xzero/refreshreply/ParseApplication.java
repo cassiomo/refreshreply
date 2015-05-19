@@ -58,11 +58,20 @@ public class ParseApplication extends Application {
 //        for (int i =0 ; i < 10; i++) {
 //            Ad ad = new Ad();
 //            ad.setCurrentStatus("Sale");
-//            ad.setAddress("4140" + i + " Blacow Rd Fremont, CA");
-//            ad.setDescription("Iphone " + i + " for sell");
-//            ad.setLocation(new ParseGeoPoint(37.5059315, -121.9469625));
-//            ad.setOwnerId("fINhuLpnZw");
-//            ad.setPhotoUrl("http://media.ed.edmunds-media.com/jeep/grand-cherokee/2015/oem/2015_jeep_grand-cherokee_4dr-suv_altitude_fq_oem_1_717.jpg");
+//            ad.setPrice("$" + i + "0");
+//            ad.setAddress(i + "1" + "20" + i + " Blacow Rd Fremont, CA");
+//            ad.setDescription("car for sell " + i);
+//            ad.setLocation(new ParseGeoPoint(37.5059315 + i, -121.9469625 - i));
+//            int odd = i % 2;
+//            if (odd == 1) {
+//                ad.setOwnerId("fINhuLpnZw");
+//                ad.setTitle("New car");
+//                ad.setPhotoUrl("http://thewowstyle.com/wp-content/uploads/2015/04/car-03.jpg");
+//            } else {
+//                ad.setTitle("Old car");
+//                ad.setOwnerId("Hh0IG6erg6");
+//                ad.setPhotoUrl("http://wallpapers111.com/wp-content/uploads/2015/03/Old-Cars-Wallpaper-660x330.jpg");
+//            }
 //            ad.saveInBackground();
 //        }
 

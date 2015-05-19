@@ -10,9 +10,19 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_above="@+id/llSend"
+        android:layout_above="@+id/vpChatHint"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
+
+    <com.xzero.refreshreply.WrapContentHeightViewPager
+        android:id="@+id/vpChatHint"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"/>
+
+<!--
     <RelativeLayout
         android:id="@+id/llSend"
         android:layout_alignParentBottom="true"
@@ -44,4 +54,5 @@
             android:textSize="18sp" >
         </Button>
     </RelativeLayout>
+    -->
 </RelativeLayout>

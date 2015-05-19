@@ -32,6 +32,8 @@
     <string name="send">Send</string>
     <string name="profile_me">My Profile Pic</string>
     <string name="profile_other">Other profile pic</string>
+    <string name="default_pump_flavor_text">Part of the MSABI Mkusa School System</string>
+
 
     <string name="carddemo_extras_title_base_twowayview">TwoWayView</string>
     <string name="carddemo_extras_title_staggered2viewway">TwoWay - Staggered Grid</string>

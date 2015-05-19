@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@+id/vgPumpRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:layout_marginTop="33dp"
+        android:background="@color/offwhite">
+
+        <LinearLayout
+            android:id="@+id/pumpStatusContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/ivPumpStatusIndicator"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/gumtree"
+                android:layout_margin="4dp"/>
+            <TextView
+                android:id="@+id/tvPumpLastUpdated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightGrayTextV2"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-light"
+                android:textSize="12dp"
+                android:text="Feb. 31" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvPumpDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/pumpStatusContainer"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:includeFontPadding="false"
+            android:textColor="@color/refreshReplyBlue"
+            android:fontFamily="sans-serif-light"
+            android:clickable="true"
+            android:textSize="16dp"
+            android:text="10 km away" />
+
+        <TextView
+            android:id="@+id/tvPumpLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/darkGrayTextV2"
+            android:textSize="20dp"
+            android:fontFamily="sans-serif-light"
+            android:text="Some Title"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/pumpStatusContainer"
+            android:layout_toEndOf="@+id/pumpStatusContainer" />
+
+
+        <TextView
+            android:id="@+id/tvPumpFlowLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/textGray"
+            android:fontFamily="sans-serif-light"
+            android:text="$20"
+            android:layout_alignBottom="@id/pumpStatusContainer"
+            android:layout_alignLeft="@id/tvPumpLocation" />
+
+
+        <!-- chat -->
+        <RelativeLayout
+            android:id="@+id/llSend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pumpStatusContainer"
+            android:background="#ffffff"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp">
+            <EditText
+                android:id="@+id/etMessage"
+                android:layout_toLeftOf="@+id/btSend"
+                android:layout_alignBottom="@+id/btSend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:hint="@string/message_hint"
+                android:inputType="textShortMessage"
+                android:imeOptions="actionSend"/>
+            <Button
+                android:id="@+id/btSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|right"
+                android:paddingRight="10dp"
+                android:layout_alignParentRight="true"
+                android:text="@string/send"
+                android:textSize="18sp" >
+            </Button>
+        </RelativeLayout>
+
+        <!-- detail container -->
+        <RelativeLayout
+            android:id="@+id/vgDetailsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/llSend">
+
+            <FrameLayout
+                android:id="@+id/botHint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </FrameLayout>
+
+<!--
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                class="com.google.android.gms.maps.MapFragment"/>
+-->
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <!-- Blue navigation overlay -->
+    <RelativeLayout
+        android:id="@+id/viewToBeRevealed"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/vgPumpRoot"
+        android:layout_alignBottom="@id/vgPumpRoot"
+        android:background="@color/refreshReplyBlue">
+        <TextView
+            android:id="@+id/tvLocationDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="4dp"
+            android:textSize="18dp"
+            android:text="Well 14 has been claimed"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="28dp"
+            android:fontFamily="sans-serif-light"
+            android:textSize="16dp"
+            android:layout_below="@id/tvLocationDescription"
+            android:text="Other technicians have been notified that repairs are in progress"/>
+    </RelativeLayout>
+
+    <!-- Action buttons -->
+    <RelativeLayout
+        android:id="@+id/vgFloatingActionButtonContainer"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp">
+        <ImageButton
+            android:id="@+id/fabStarPump"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/dark_blue_ripple"
+            android:stateListAnimator="@anim/button_animator"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_star_white_filled"/>
+
+        <ImageButton
+            android:id="@+id/fabStarredIndicator"
+            android:visibility="gone"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/white_ripple"
+            android:stateListAnimator="@anim/button_animator"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_star_blue_list"/>
+
+        <ImageButton
+            android:id="@+id/fabAddReport"
+            android:visibility="gone"
+            android:padding="10dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/ripple_green"
+            android:stateListAnimator="@anim/button_animator"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_addreport64"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

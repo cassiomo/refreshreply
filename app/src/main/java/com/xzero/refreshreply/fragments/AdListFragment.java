@@ -14,14 +14,11 @@ import android.widget.Toast;
 
 import com.nhaarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter;
 import com.nhaarman.listviewanimations.swinginadapters.prepared.SwingRightInAnimationAdapter;
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.xzero.refreshreply.AdPersister;
 import com.xzero.refreshreply.R;
 import com.xzero.refreshreply.adapters.AdListAdapter;
 import com.xzero.refreshreply.helpers.NetworkUtil;
@@ -242,31 +239,31 @@ public class AdListFragment extends Fragment implements OnRefreshListener {
 
     private void unpinAndRepin(final List<ParseObject> ads) {
 
-        Log.d("debug", "Unpinning previously saved objects");
-        ParseObject.unpinAllInBackground(AdPersister.ALL_ADS, ads,
-                new DeleteCallback() {
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            // There was some error.
-                            return;
-                        } else {
-                            Log.d("info", ads.size() + " previous cached ads deleted.");
-                        }
-                    }
-                }
-        );
+//        Log.d("debug", "Unpinning previously saved objects");
+//        ParseObject.unpinAllInBackground(AdPersister.ALL_ADS, ads,
+//                new DeleteCallback() {
+//                    public void done(ParseException e) {
+//                        if (e != null) {
+//                            // There was some error.
+//                            return;
+//                        } else {
+//                            Log.d("info", ads.size() + " previous cached ads deleted.");
+//                        }
+//                    }
+//                }
+//        );
         // Add the latest results for this query to the cache.
         Log.d("debug", "Pinning newly fetched ads " + ads.size());
-        ParseObject.pinAllInBackground(AdPersister.ALL_ADS, ads, new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.d("debug", "Pinned newly fetched ads " + ads.size());
-                } else {
-                    Log.d("debug", "Couldn't pin ads: " + e.toString());
-                }
-            }
-        });
+//        ParseObject.pinAllInBackground(AdPersister.ALL_ADS, ads, new SaveCallback() {
+//            @Override
+//            public void done(ParseException e) {
+//                if (e == null) {
+//                    Log.d("debug", "Pinned newly fetched ads " + ads.size());
+//                } else {
+//                    Log.d("debug", "Couldn't pin ads: " + e.toString());
+//                }
+//            }
+//        });
     }
 
     private void addAdsToAdapter(List<ParseObject> ads) {

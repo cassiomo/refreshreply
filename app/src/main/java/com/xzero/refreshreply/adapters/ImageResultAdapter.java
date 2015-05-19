@@ -15,12 +15,26 @@ import com.xzero.refreshreply.models.Ad;
 
 import java.util.List;
 
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
-public class ImageResultAdapter extends ArrayAdapter<Ad> implements OnRefreshListener {
+public class ImageResultAdapter extends ArrayAdapter<Ad>  {
 
     public ImageResultAdapter(Context context, List<Ad> images) {
         super(context, R.layout.item_image_result, images);
+    }
+
+    public static class ViewHolder {
+        @InjectView(R.id.ivImage)
+        ImageView imageView;
+        @InjectView(R.id.tvTitle)
+        TextView tvTitle;
+        @InjectView(R.id.tvPrice)
+        TextView tvPrice;
+
+        public ViewHolder(View view){
+            ButterKnife.inject(this, view);
+        }
     }
 
     @Override
@@ -28,23 +42,31 @@ public class ImageResultAdapter extends ArrayAdapter<Ad> implements OnRefreshLis
 
         Ad imageResult = getItem(position);
 
+
+        ViewHolder viewHolder; // view lookup cache stored in tag
+
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_image_result, parent, false);
+            viewHolder = new ViewHolder(convertView);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.ivImage);
-        TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+//        ImageView imageView = (ImageView) convertView.findViewById(R.id.ivImage);
+//        TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
 
-        imageView.setImageResource(0);
+        viewHolder.imageView.setImageResource(0);
 
-        tvTitle.setText(Html.fromHtml(imageResult.getDescription()));
-        Picasso.with(getContext()).load(imageResult.getPhotoUrl()).into(imageView);
+        viewHolder.tvTitle.setText(Html.fromHtml(imageResult.getTitle()));
+        viewHolder.tvPrice.setText(Html.fromHtml(imageResult.getPrice()));
+        Picasso.with(getContext()).load(imageResult.getPhotoUrl()).into(viewHolder.imageView);
 
         return convertView;
     }
 
-    @Override
-    public void onRefreshStarted(View view) {
-
+    public Ad getAdAtIndex(int index) {
+        Ad ad = getItem(index);
+        return ad;
     }
 }

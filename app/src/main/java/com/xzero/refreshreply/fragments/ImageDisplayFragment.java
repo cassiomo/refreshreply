@@ -49,7 +49,7 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
     public AdListListener mListener;
 
     private ArrayList<Ad> ads;
-    private ImageResultAdapter aImageResultAdapter;
+    ImageResultAdapter aImageResultAdapter;
     private final int REQUEST_CODE = 20;
 
     private EndlessScrollListener endlessScrollListener = new EndlessScrollListener() {
@@ -142,26 +142,26 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
 
         query.findInBackground(new FindCallback<ParseObject>() {
 
-            public void done(final List<ParseObject> ads, ParseException e) {
+        public void done(final List<ParseObject> ads, ParseException e) {
 
-                if (e == null) {
-                    mListener.onListRefreshederested();
+            if (e == null) {
+                mListener.onListRefreshederested();
 
-                    Log.d("info", "Fetching ads from local DB. Found " + ads.size());
+                Log.d("info", "Fetching ads from local DB. Found " + ads.size());
 
-                    if (ads.size() == 0) {
-                        fetchAdsFromRemote(ParseQuery.getQuery("Ad"));
-                    } else {
-                        pbLoading.setVisibility(ProgressBar.INVISIBLE);
-                        Log.d("debug", "Using ads fetched from local DB.");
-                        addAdsToAdapter(ads);
-                    }
+                if (ads.size() == 0) {
+                    fetchAdsFromRemote(ParseQuery.getQuery("Ad"));
                 } else {
-                    Log.d("error", "Exception while fetching ads: " + e);
                     pbLoading.setVisibility(ProgressBar.INVISIBLE);
+                    Log.d("debug", "Using ads fetched from local DB.");
+                    addAdsToAdapter(ads);
                 }
+            } else {
+                Log.d("error", "Exception while fetching ads: " + e);
+                pbLoading.setVisibility(ProgressBar.INVISIBLE);
             }
-        });
+        }
+    });
     }
 
     private void unpinAndRepin(final List<ParseObject> ads) {

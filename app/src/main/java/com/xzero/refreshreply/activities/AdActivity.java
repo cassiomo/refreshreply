@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.xzero.refreshreply.R;
@@ -17,13 +18,6 @@ import com.xzero.refreshreply.models.Ad;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-//import android.support.v4.app.Fragment;
-//import android.support.v4.app.FragmentActivity;
-//import android.support.v4.app.FragmentManager;
-//import android.support.v4.app.FragmentPagerAdapter;
-//import android.support.v4.view.ViewPager;
-
-//public class AdBrowserActivity extends FragmentActivity implements AdListListener{
 public class AdActivity extends Activity implements AdListListener{
 
     @InjectView(R.id.adsViewPager)
@@ -32,7 +26,7 @@ public class AdActivity extends Activity implements AdListListener{
     @InjectView(R.id.slidingTabs)
     PagerSlidingTabStrip mTabs;
 
-    private ListMapPagerAdapter mListMapPagerAdapter;
+    private ListAdPagerAdapter mListAdPagerAdapter;
 
     private Boolean isFromPush;
 
@@ -42,12 +36,11 @@ public class AdActivity extends Activity implements AdListListener{
         setContentView(R.layout.activity_adbrowser);
 
         ButterKnife.inject(this);
-
         FragmentManager fragmentManager = getFragmentManager();
 
-        //mListMapPagerAdapter = new ListMapPagerAdapter(getSupportFragmentManager());
-        mListMapPagerAdapter = new ListMapPagerAdapter(fragmentManager);
-        mPager.setAdapter(mListMapPagerAdapter);
+        //mListAdPagerAdapter = new ListMapPagerAdapter(getSupportFragmentManager());
+        mListAdPagerAdapter = new ListAdPagerAdapter(fragmentManager);
+        mPager.setAdapter(mListAdPagerAdapter);
 
         mTabs.setViewPager(mPager);
         if (getIntent().getExtras() !=null) {
@@ -60,15 +53,33 @@ public class AdActivity extends Activity implements AdListListener{
         super.onDestroy();
     }
 
+    private MessageFragment getMessageFragment() {
+        return mListAdPagerAdapter.messageFragment;
+    }
+
+    private ImageDisplayFragment getImageDisplayFragment() {
+        return mListAdPagerAdapter.imageDisplayFragment;
+    }
+
     @Override
     public void onListRefreshederested() {
-
+        Log.d("DBG", "onListRefreshederested");
+//        if (getMessageFragment().mMapPagerAdapter != null) {
+//            getMessageFragment().mMapPagerAdapter.notifyDataSetChanged();
+//        }
+        if (getMessageFragment() != null && getMessageFragment().mAdResultAdapter != null) {
+            Ad indexAd = getMessageFragment().mAdResultAdapter.getAdAtIndex(0);
+            getMessageFragment().setCurrentlyDisplayedAd(indexAd);
+        }
+        else {
+            Log.e("DBG", "Calling onListRefreshed at the wrong time.");
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (isFromPush) {
+        if (isFromPush !=null && isFromPush) {
             switchToMessageView();
         }
     }
@@ -85,19 +96,14 @@ public class AdActivity extends Activity implements AdListListener{
         mPager.setCurrentItem(1, true);
     }
 
-    private MessageFragment getMessageFragment() {
-        return mListMapPagerAdapter.messageFragment;
-    }
-
-
-    public static class ListMapPagerAdapter extends FragmentPagerAdapter {
+    public static class ListAdPagerAdapter extends FragmentPagerAdapter {
 
         //protected AdListFragment mAdListFragment;
         //protected AdStaggeredGridFragment adStaggeredGridFragment;
         protected ImageDisplayFragment imageDisplayFragment;
         protected MessageFragment messageFragment;
 
-        public ListMapPagerAdapter(FragmentManager fm) {
+        public ListAdPagerAdapter(FragmentManager fm) {
             super(fm);
             messageFragment = MessageFragment.newInstance();
             imageDisplayFragment = ImageDisplayFragment.newInstance();
