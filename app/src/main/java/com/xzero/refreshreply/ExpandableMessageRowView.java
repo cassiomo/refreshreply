@@ -3,6 +3,8 @@ package com.xzero.refreshreply;
 import android.animation.Animator;
 import android.content.Context;
 import android.graphics.Outline;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -18,16 +20,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
@@ -47,7 +45,9 @@ import java.text.DecimalFormat;
 
 //import android.view.animation.Animation;
 
-public class ExpandableMessageRowView extends RelativeLayout {
+public class ExpandableMessageRowView extends RelativeLayout implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
 
     public static final int TARGET_DETAILS_HEIGHT = 600;
     public static final int ANIMATE_IN_DURATION_MILLIS = 300;
@@ -59,8 +59,11 @@ public class ExpandableMessageRowView extends RelativeLayout {
 
     private MapFragment mapFragment;
 
-    MapView mapView;
-    GoogleMap googleMap;
+    private Context mContext;
+
+   // MapView mapView;
+    private GoogleMap map;
+    private GoogleApiClient mGoogleApiClient;
 
     View fabStarPump;
     View fabUnstarPump;
@@ -79,99 +82,118 @@ public class ExpandableMessageRowView extends RelativeLayout {
 
     private ViewHolder viewHolder;
 
+    //private static final String TAG = "RowView";
+
     public static final double MAP_DISPLAY_DELTA = 0.03;
 
     public ExpandableMessageRowView(final Context context, AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(context, R.layout.expandable_row_ad, this);
 
-        detailsChat = (ViewGroup) findViewById(R.id.llSend);
-        //detailsChat.setVisibility(View.GONE);
-
-        btSend = (Button) findViewById(R.id.btSend);
-        etMessage = (EditText) findViewById(R.id.etMessage);
-
-        btSend.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                String body = etMessage.getText().toString();
-                saveMessageInBackground(body, null);
-
-                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
-            }
-        });
-
-
-        detailsContainer = (ViewGroup) findViewById(R.id.vgDetailsContainer);
-        detailsContainer.setVisibility(View.GONE);
-        mClaimedLabel = (TextView) findViewById(R.id.tvLocationDescription);
-        mNavigationOverlayViewToBeRevealed = findViewById(R.id.viewToBeRevealed);
-        mPumpFlowLabel = (TextView) findViewById(R.id.tvPumpFlowLabel);
-        viewHolder = new ViewHolder();
-
-        //mapFragment = new MapFragment();
-
-//        mapView = (MapView) findViewById(R.id.mapView);
-//
-//        mapView.onResume();
 //        try {
-//            MapsInitializer.initialize(context.getApplicationContext());
-//        } catch (Exception e) {
-//            e.printStackTrace();
+            View.inflate(context, R.layout.expandable_row_ad, this);
+
+            detailsChat = (ViewGroup) findViewById(R.id.llSend);
+            //detailsChat.setVisibility(View.GONE);
+
+            btSend = (Button) findViewById(R.id.btSend);
+            etMessage = (EditText) findViewById(R.id.etMessage);
+
+            btSend.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    String body = etMessage.getText().toString();
+                    saveMessageInBackground(body, null);
+
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
+                }
+            });
+
+
+            detailsContainer = (ViewGroup) findViewById(R.id.vgDetailsContainer);
+            detailsContainer.setVisibility(View.GONE);
+            mClaimedLabel = (TextView) findViewById(R.id.tvLocationDescription);
+            mNavigationOverlayViewToBeRevealed = findViewById(R.id.viewToBeRevealed);
+            mPumpFlowLabel = (TextView) findViewById(R.id.tvPumpFlowLabel);
+            viewHolder = new ViewHolder();
+
+//        if (context instanceof Activity){
+//            mContext = context;
+//            mapFragment = (MapFragment) ((Activity) context).getFragmentManager().findFragmentById(R.id.botHint);
+//            if (mapFragment != null) {
+//                mapFragment.getMapAsync(new OnMapReadyCallback() {
+//                    @Override
+//                    public void onMapReady(GoogleMap googleMap) {
+//                        loadMap(googleMap);
+//                    }
+//                });
+//            }else{
+//                Log.d("RowView", "Error - Map Fragment was null.");
+//            }
+//        } else {
+//            Log.d("RowView", "Error - context is not activity.");
 //        }
-//
-//        googleMap = mapView.getMap();
-//        // latitude and longitude
-//        double latitude = 17.385044;
-//        double longitude = 78.486671;
-//
-//        // create marker
-//        MarkerOptions marker = new MarkerOptions().position(
-//                new LatLng(latitude, longitude)).title("Hello Maps");
-//
-//        // Changing marker icon
-//        marker.icon(BitmapDescriptorFactory
-//                .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-//
-//        // adding marker
-//        googleMap.addMarker(marker);
-//        CameraPosition cameraPosition = new CameraPosition.Builder()
-//                .target(new LatLng(17.385044, 78.486671)).zoom(12).build();
-//        googleMap.animateCamera(CameraUpdateFactory
-//                .newCameraPosition(cameraPosition));
 
+            populateViewHolder();
+            setupUnclaimButton();
+            setupClaimPumpButton();
+            fabAddReport = findViewById(R.id.fabAddReport);
+            fabAddReport.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onAddReport(context);
+                }
+            });
 
-        //Log.d("map", String.valueOf(map));
-//        map.getUiSettings().setMyLocationButtonEnabled(false);
-//        map.setMyLocationEnabled(true);
-
-        // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
-
-        //MapsInitializer.initialize(context);
-
-
-        populateViewHolder();
-        setupUnclaimButton();
-        setupClaimPumpButton();
-        fabAddReport = findViewById(R.id.fabAddReport);
-        fabAddReport.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onAddReport(context);
-            }
-        });
-
-        int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
+            int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
+//        } catch (InflateException e) {
+//                // map is created ignore
+//                Log.d("adRow", "map is created");
+//        }
 
     }
 
-    GoogleMap getMap() {
-        if (mapFragment == null) {
-            return null;
+//    public void onConnected(Bundle dataBundle) {
+//        List<Address> geoCode = GeoCodeHelper.getGeoCode(mContext, eventLocation);
+//        if (geoCode != null && !geoCode.isEmpty() ){
+//            LatLng location = new LatLng(
+//                    geoCode.get(0).getLatitude(), geoCode.get(0).getLongitude());
+//            map.setMyLocationEnabled(true);
+//            map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, ZOOM_LEVEL));
+//            map.addMarker(new MarkerOptions()
+//                    .title(eventLocation)
+//                    .position(location));
+//        }
+//    }
+
+    public void loadMap(@NonNull GoogleMap googleMap) {
+        map = googleMap;
+        map.setMyLocationEnabled(true);
+        // Now that map has loaded, let's get our location!
+        mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+        .addApi(LocationServices.API)
+        .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this).build();
+        connectClient();
+    }
+
+    protected void connectClient() {
+        if (isGooglePlayServicesAvailable() && mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
         }
-        return mapFragment.getMap();
+    }
+
+    private boolean isGooglePlayServicesAvailable() {
+        // Check that Google Play services is available
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext);
+        if (ConnectionResult.SUCCESS == resultCode) {
+            Log.d("RowView", "Google Play services is available.");
+            return true;
+        } else {
+            Log.d("RowView", "Google Play services is not available.");
+            return false;
+        }
     }
 
     private void setupClaimPumpButton() {
@@ -179,32 +201,23 @@ public class ExpandableMessageRowView extends RelativeLayout {
         fabStarPump.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                beginAnimationToRevealNavigationOverviewAndHidePager();
-                beginAnimationToRevealUnstarFAB();
+                //beginAnimationToRevealNavigationOverviewAndHidePager();
+                //beginAnimationToRevealUnstarFAB();
+
                 //mPump.setIsClaimedByATechnician(true);
                 //rowDelegate.onPumpClaimClicked(mPump);
             }
         });
     }
 
-    private void resetMapUI() {
-        GoogleMap map = getMap();
-        if (map != null) {
-            getMap().getUiSettings().setZoomControlsEnabled(false);
-            getMap().clear();
-            centerMapOnAd();
-        } else {
-            Log.d("map", "map is null");
-        }
-    }
 
     private void setupUnclaimButton() {
         fabUnstarPump = findViewById(R.id.fabStarredIndicator);
         fabUnstarPump.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                beginAnimationToRevealStarPumpFAB();
-                beginAnimationToUnrevealNavigationOverlayView();
+                //beginAnimationToRevealStarPumpFAB();
+                //beginAnimationToUnrevealNavigationOverlayView();
                 //mPump.setIsClaimedByATechnician(false);
             }
         });
@@ -286,22 +299,22 @@ public class ExpandableMessageRowView extends RelativeLayout {
         }
     }
 
-    void centerMapOnAd () {
-        if (currentInterestedAd == null) {
-            return;
-        }
-        double lat = currentInterestedAd.getLocation().getLatitude();
-        double longitude = currentInterestedAd.getLocation().getLongitude();
-        LatLng positionTopLeft = new LatLng(lat - MAP_DISPLAY_DELTA, longitude - MAP_DISPLAY_DELTA);
-        LatLng fartherAwayPosition = new LatLng(lat + MAP_DISPLAY_DELTA, longitude + MAP_DISPLAY_DELTA);
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(positionTopLeft);
-        builder.include(fartherAwayPosition);
-        LatLngBounds bounds = builder.build();
-        if (getMap() != null) {
-            getMap().animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
-        }
-    }
+//    void centerMapOnAd () {
+//        if (currentInterestedAd == null) {
+//            return;
+//        }
+//        double lat = currentInterestedAd.getLocation().getLatitude();
+//        double longitude = currentInterestedAd.getLocation().getLongitude();
+//        LatLng positionTopLeft = new LatLng(lat - MAP_DISPLAY_DELTA, longitude - MAP_DISPLAY_DELTA);
+//        LatLng fartherAwayPosition = new LatLng(lat + MAP_DISPLAY_DELTA, longitude + MAP_DISPLAY_DELTA);
+//        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+//        builder.include(positionTopLeft);
+//        builder.include(fartherAwayPosition);
+//        LatLngBounds bounds = builder.build();
+//        if (getMap() != null) {
+//            getMap().animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+//        }
+//    }
 
     public void toggleExpandedState() {
         boolean expanded = detailsContainer.getVisibility() == View.VISIBLE;
@@ -535,34 +548,6 @@ public class ExpandableMessageRowView extends RelativeLayout {
         viewHolder.tvLocation.setText(Html.fromHtml(currentInterestedAd.getTitle()));
         mPumpFlowLabel.setText(currentInterestedAd.getPrice());
 
-        mapView = (MapView) findViewById(R.id.mapView);
-
-        //mapView.onResume();
-        try {
-            MapsInitializer.initialize(context.getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        googleMap = mapView.getMap();
-        // latitude and longitude
-        double latitude = 17.385044;
-        double longitude = 78.486671;
-
-        // create marker
-        MarkerOptions marker = new MarkerOptions().position(
-                new LatLng(latitude, longitude)).title("Hello Maps");
-
-        // Changing marker icon
-        marker.icon(BitmapDescriptorFactory
-                .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-
-        // adding marker
-        googleMap.addMarker(marker);
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(17.385044, 78.486671)).zoom(12).build();
-        googleMap.animateCamera(CameraUpdateFactory
-                .newCameraPosition(cameraPosition));
     }
 
 
@@ -570,6 +555,21 @@ public class ExpandableMessageRowView extends RelativeLayout {
     public void clearTextViews() {
         viewHolder.tvLocation.setText("");
         viewHolder.tvPumpDistance.setText("");
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 
     static class ViewHolder {

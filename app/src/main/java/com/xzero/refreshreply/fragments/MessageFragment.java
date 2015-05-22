@@ -3,7 +3,6 @@ package com.xzero.refreshreply.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -14,9 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.Marker;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -42,9 +38,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class MessageFragment extends Fragment  implements
-        GoogleMap.OnMarkerClickListener,
-        GoogleMap.OnInfoWindowClickListener{
+public class MessageFragment extends Fragment {
 
     @InjectView(R.id.lvChat)
     ListView lvChat;
@@ -64,7 +58,6 @@ public class MessageFragment extends Fragment  implements
     private ChatListAdapter mAdapter;
     private Ad currentInterestedAd;
 
-    private MapFragment mapFragment;
 
     public PagerAdapter mMapPagerAdapter = new PagerAdapter() {
         @Override
@@ -87,9 +80,6 @@ public class MessageFragment extends Fragment  implements
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            final ExpandableMessageRowView adRow = new ExpandableMessageRowView(getActivity(), null);
-            //adRow.rowDelegate = MapFragment.this;
-            //final Ad theAd = mAdResultAdapter.getItem(position);
 //            Ad currentInterestedAd;
             if (currentInterestedAd == null) {
                 currentInterestedAd = new Ad();
@@ -102,18 +92,23 @@ public class MessageFragment extends Fragment  implements
                 currentInterestedAd.setTitle("New car");
                 currentInterestedAd.setPhotoUrl("http://thewowstyle.com/wp-content/uploads/2015/04/car-03.jpg");
             }
-            adRow.updateSubviews(currentInterestedAd, getActivity());
-            container.addView(adRow);
 
-            adRow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    adRow.onRowClick();
-                }
-            });
+            final ExpandableMessageRowView adRow = new ExpandableMessageRowView(getActivity(), null);
+            //adRow.rowDelegate = MapFragment.this;
+            //final Ad theAd = mAdResultAdapter.getItem(position);
+            //if (adRow !=null) {
+                adRow.updateSubviews(currentInterestedAd, getActivity());
+                container.addView(adRow);
 
-            adRow.setTag(position);
+                adRow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        adRow.onRowClick();
+                    }
+                });
 
+                adRow.setTag(position);
+            //}
             return adRow;
         }
 
@@ -136,9 +131,6 @@ public class MessageFragment extends Fragment  implements
 
         super.onCreate(savedInstanceState);
         startWithCurrentUser();
-
-        //mapFragment = new SupportMapFragment();
-        //mapFragment = new MapFragment();
 
        // Run the runnable object defined every 100ms
        handler.postDelayed(runnable, 100);
@@ -189,23 +181,9 @@ public class MessageFragment extends Fragment  implements
         return view;
     }
 
-    public void addMapFragment(MapFragment theMapFragment) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        MapFragment fragment = new MapFragment();
-        ft.add(R.id.mapView, theMapFragment);
-        ft.commit();
-    }
-
     private void onAdPagerSwitchedPages(int i) {
         Ad ad = mAdResultAdapter.getAdAtIndex(i);
         currentInterestedAd = ad;
-    }
-
-    GoogleMap getMap() {
-        if (mapFragment == null) {
-            return null;
-        }
-        return mapFragment.getMap();
     }
 
     private void resetCardView() {
@@ -382,13 +360,4 @@ public class MessageFragment extends Fragment  implements
         //centerMapOnPump(p);
     }
 
-    @Override
-    public void onInfoWindowClick(Marker marker) {
-
-    }
-
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        return false;
-    }
 }
