@@ -121,6 +121,30 @@ public class SignInActivity extends ActionBarActivity {
 
     }
 
+//    @Override
+//    protected void onActivityResult(int requestCode,
+//                                    int resultCode, Intent data) {
+//
+//        if (requestCode == PLACE_PICKER_REQUEST
+//                && resultCode == Activity.RESULT_OK) {
+//
+//            final Place place = PlacePicker.getPlace(data, this);
+//            final CharSequence name = place.getName();
+//            final CharSequence address = place.getAddress();
+//            String attributions = PlacePicker.getAttributions(data);
+//            if (attributions == null) {
+//                attributions = "";
+//            }
+//
+//            mName.setText(name);
+//            mAddress.setText(address);
+//            mAttributions.setText(Html.fromHtml(attributions));
+//
+//        } else {
+//            super.onActivityResult(requestCode, resultCode, data);
+//        }
+//    }
+
     public void onSignIn(View v) {
 
         username = etUsername.getText().toString();

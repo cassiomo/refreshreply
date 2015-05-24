@@ -3,12 +3,16 @@ package com.xzero.refreshreply.activities;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.xzero.refreshreply.R;
 import com.xzero.refreshreply.fragments.ImageDisplayFragment;
 import com.xzero.refreshreply.fragments.MessageFragment;
@@ -29,6 +33,8 @@ public class AdActivity extends Activity implements AdListListener{
     private ListAdPagerAdapter mListAdPagerAdapter;
 
     private Boolean isFromPush;
+
+    public int PLACE_PICKER_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +145,32 @@ public class AdActivity extends Activity implements AdListListener{
                     return "MESSAGE";
             }
             return super.getPageTitle(position);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode,
+                                    int resultCode, Intent data) {
+
+        if (requestCode == PLACE_PICKER_REQUEST
+                && resultCode == Activity.RESULT_OK) {
+
+            final Place place = PlacePicker.getPlace(data, this);
+            final CharSequence name = place.getName();
+            final CharSequence address = place.getAddress();
+            String attributions = PlacePicker.getAttributions(data);
+            if (attributions == null) {
+                attributions = "";
+            }
+
+            String toastMsg = String.format("Place: %s", place.getName());
+            Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+//            mName.setText(name);
+//            mAddress.setText(address);
+//            mAttributions.setText(Html.fromHtml(attributions));
+
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 }

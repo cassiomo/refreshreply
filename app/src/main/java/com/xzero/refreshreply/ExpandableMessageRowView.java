@@ -1,7 +1,9 @@
 package com.xzero.refreshreply;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Outline;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,11 +23,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
@@ -33,6 +40,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
+import com.xzero.refreshreply.helpers.GPSTracker;
 import com.xzero.refreshreply.models.Ad;
 import com.xzero.refreshreply.models.Message;
 import com.xzero.refreshreply.notification.MyCustomReceiver;
@@ -60,6 +68,8 @@ public class ExpandableMessageRowView extends RelativeLayout implements
     private MapFragment mapFragment;
 
     private Context mContext;
+
+    public int PLACE_PICKER_REQUEST = 1;
 
    // MapView mapView;
     private GoogleMap map;
@@ -117,23 +127,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
             mNavigationOverlayViewToBeRevealed = findViewById(R.id.viewToBeRevealed);
             mPumpFlowLabel = (TextView) findViewById(R.id.tvPumpFlowLabel);
             viewHolder = new ViewHolder();
-
-//        if (context instanceof Activity){
-//            mContext = context;
-//            mapFragment = (MapFragment) ((Activity) context).getFragmentManager().findFragmentById(R.id.botHint);
-//            if (mapFragment != null) {
-//                mapFragment.getMapAsync(new OnMapReadyCallback() {
-//                    @Override
-//                    public void onMapReady(GoogleMap googleMap) {
-//                        loadMap(googleMap);
-//                    }
-//                });
-//            }else{
-//                Log.d("RowView", "Error - Map Fragment was null.");
-//            }
-//        } else {
-//            Log.d("RowView", "Error - context is not activity.");
-//        }
+            mContext = context;
 
             populateViewHolder();
             setupUnclaimButton();
@@ -147,25 +141,9 @@ public class ExpandableMessageRowView extends RelativeLayout implements
             });
 
             int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
-//        } catch (InflateException e) {
-//                // map is created ignore
-//                Log.d("adRow", "map is created");
-//        }
+
 
     }
-
-//    public void onConnected(Bundle dataBundle) {
-//        List<Address> geoCode = GeoCodeHelper.getGeoCode(mContext, eventLocation);
-//        if (geoCode != null && !geoCode.isEmpty() ){
-//            LatLng location = new LatLng(
-//                    geoCode.get(0).getLatitude(), geoCode.get(0).getLongitude());
-//            map.setMyLocationEnabled(true);
-//            map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, ZOOM_LEVEL));
-//            map.addMarker(new MarkerOptions()
-//                    .title(eventLocation)
-//                    .position(location));
-//        }
-//    }
 
     public void loadMap(@NonNull GoogleMap googleMap) {
         map = googleMap;
@@ -201,6 +179,59 @@ public class ExpandableMessageRowView extends RelativeLayout implements
         fabStarPump.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+
+//                Intent i = new Intent(mContext, MapActivity.class);
+//                mContext.startActivity(i);
+
+                double lat = 37.3770091;
+                double longitude = 37.3770091;
+                LatLng position;
+
+                GPSTracker tracker = new GPSTracker(mContext);
+                if (tracker.canGetLocation() == false) {
+                    tracker.showSettingsAlert();
+                } else {
+                    lat = tracker.getLatitude();
+                    longitude = tracker.getLongitude();
+                }
+
+                LatLng positionTopLeft = new LatLng(lat - MAP_DISPLAY_DELTA, longitude - MAP_DISPLAY_DELTA);
+                LatLng fartherAwayPosition = new LatLng(lat + MAP_DISPLAY_DELTA, longitude + MAP_DISPLAY_DELTA);
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                builder.include(positionTopLeft);
+                builder.include(fartherAwayPosition);
+                LatLngBounds bounds = builder.build();
+
+//                if (getMap() != null) {
+//
+//                    MarkerOptions options = new MarkerOptions();
+//                    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.me));
+//
+//                    position = new LatLng(lat, longitude);
+//                    options.position(position);
+//                    options.title(ME_TITLE);
+//                    getMap().addMarker(options);
+//
+//                    getMap().animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+//                }
+
+//                int PLACE_PICKER_REQUEST = 1;
+
+                PlacePicker.IntentBuilder intentBuilder =
+                        new PlacePicker.IntentBuilder();
+                intentBuilder.setLatLngBounds(bounds);
+                Intent intent = null;
+                try {
+                    intent = intentBuilder.build(mContext);
+
+                    ((Activity)mContext).startActivityForResult(intent, PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+
+                //mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 //beginAnimationToRevealNavigationOverviewAndHidePager();
                 //beginAnimationToRevealUnstarFAB();
 
@@ -209,7 +240,6 @@ public class ExpandableMessageRowView extends RelativeLayout implements
             }
         });
     }
-
 
     private void setupUnclaimButton() {
         fabUnstarPump = findViewById(R.id.fabStarredIndicator);
@@ -298,23 +328,6 @@ public class ExpandableMessageRowView extends RelativeLayout implements
             toggleExpandedState();
         }
     }
-
-//    void centerMapOnAd () {
-//        if (currentInterestedAd == null) {
-//            return;
-//        }
-//        double lat = currentInterestedAd.getLocation().getLatitude();
-//        double longitude = currentInterestedAd.getLocation().getLongitude();
-//        LatLng positionTopLeft = new LatLng(lat - MAP_DISPLAY_DELTA, longitude - MAP_DISPLAY_DELTA);
-//        LatLng fartherAwayPosition = new LatLng(lat + MAP_DISPLAY_DELTA, longitude + MAP_DISPLAY_DELTA);
-//        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-//        builder.include(positionTopLeft);
-//        builder.include(fartherAwayPosition);
-//        LatLngBounds bounds = builder.build();
-//        if (getMap() != null) {
-//            getMap().animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
-//        }
-//    }
 
     public void toggleExpandedState() {
         boolean expanded = detailsContainer.getVisibility() == View.VISIBLE;

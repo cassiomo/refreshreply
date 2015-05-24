@@ -41,6 +41,7 @@
     <string name="carddemo_extras_title_base_staggered">Base StaggeredGrid</string>
     <string name="carddemo_extras_title_animate_staggered">Animate StaggeredGrid</string>
     <string name="carddemo_extras_title_stag">More details...</string>
+    <string name="title_activity_place_picker">PlacePicker</string>
 
 
 
