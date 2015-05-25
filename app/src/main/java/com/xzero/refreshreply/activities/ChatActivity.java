@@ -37,7 +37,7 @@ public class ChatActivity extends Activity {
     @InjectView(R.id.btSend)
     Button btSend;
     @InjectView(R.id.lvChat)
-    ListView lvchat;
+    ListView lvChat;
 
     private static final String TAG = ChatActivity.class.getName();
     private static String sUserId;
@@ -45,13 +45,9 @@ public class ChatActivity extends Activity {
     public static final String USER_ID_KEY = "userId";
     private static final int MAX_CHAT_MESSAGES_TO_SHOW = 50;
 
-    //private EditText etMessage;
-    //private Button btSend;
-
     // Create a handler which can run code periodically
     private Handler handler = new Handler();
 
-    private ListView lvChat;
     private ArrayList<Message> mMessages;
     private ChatListAdapter mAdapter;
 
@@ -103,9 +99,6 @@ public class ChatActivity extends Activity {
     }
 
     private void setupMessagePosting() {
-//        etMessage = (EditText) findViewById(R.id.etMessage);
-//        btSend = (Button) findViewById(R.id.btSend);
-//        lvChat = (ListView) findViewById(R.id.lvChat);
         mMessages = new ArrayList<Message>();
         mAdapter = new ChatListAdapter(ChatActivity.this, sUserId, mMessages);
         lvChat.setAdapter(mAdapter);

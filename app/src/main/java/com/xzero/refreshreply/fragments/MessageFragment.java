@@ -212,21 +212,6 @@ public class MessageFragment extends Fragment {
                     mMessages.addAll(messages);
                     mAdapter.notifyDataSetChanged();
                     lvChat.invalidate();
-//                    if (messages.size() > 0 ) {
-//                        String senderId = messages.get(messages.size() - 1).getUserId();
-//                        Log.d("message userId", senderId);
-//                        Log.d("current userId", sUserId);
-//                        if (!sUserId.equals(senderId)) {
-//                            Log.d("FromYou", "FromYou");
-//                            if (messages.get(messages.size() - 1).getBody().contains("when")) {
-//                                Log.d("Found when", "Found when");
-//                                // pop up the map and log the time to calendar
-//                            }
-//                        } else {
-//                            Log.d("FromMe", "FromMe");
-//                        }
-//                    }
-
                 } else {
                     Log.d("message", "Error: " + e.getMessage());
                 }

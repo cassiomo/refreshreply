@@ -2,6 +2,8 @@ package com.xzero.refreshreply;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Outline;
@@ -17,10 +19,12 @@ import android.view.ViewOutlineProvider;
 import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -48,7 +52,8 @@ import com.xzero.refreshreply.notification.MyCustomReceiver;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
+import java.text.DateFormat;
+import java.util.Calendar;
 
 
 //import android.view.animation.Animation;
@@ -63,7 +68,6 @@ public class ExpandableMessageRowView extends RelativeLayout implements
     public static final int CIRCULAR_REVEAL_DURATION_NAVIGATE = 500;
 
     public Ad currentInterestedAd;
-    //public PumpRowDelegate rowDelegate;
 
     private MapFragment mapFragment;
 
@@ -71,19 +75,17 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
     public int PLACE_PICKER_REQUEST = 1;
 
-   // MapView mapView;
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
 
-    View fabStarPump;
-    View fabUnstarPump;
+    View fabStarAd;
+    View fabUnstarAd;
     View fabAddReport;
     View mNavigationOverlayViewToBeRevealed;
 
-    TextView mClaimedLabel;
-    TextView mPumpFlowLabel;
+    TextView mtvLocationLabel;
+    TextView mtvPriceLabel;
 
-    private DecimalFormat df = new DecimalFormat("#.#");
     private ViewGroup detailsContainer;
 
     private ViewGroup detailsChat;
@@ -92,9 +94,11 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
     private ViewHolder viewHolder;
 
-    //private static final String TAG = "RowView";
+    private static final String TAG = "ExpandableMessageRowView";
 
     public static final double MAP_DISPLAY_DELTA = 0.03;
+
+    int mCondition = 0;
 
     public ExpandableMessageRowView(final Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -123,16 +127,16 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
             detailsContainer = (ViewGroup) findViewById(R.id.vgDetailsContainer);
             detailsContainer.setVisibility(View.GONE);
-            mClaimedLabel = (TextView) findViewById(R.id.tvLocationDescription);
+            mtvLocationLabel = (TextView) findViewById(R.id.tvLocationDescription);
             mNavigationOverlayViewToBeRevealed = findViewById(R.id.viewToBeRevealed);
-            mPumpFlowLabel = (TextView) findViewById(R.id.tvPumpFlowLabel);
+            mtvPriceLabel = (TextView) findViewById(R.id.tvAdPrice);
             viewHolder = new ViewHolder();
             mContext = context;
 
             populateViewHolder();
             setupUnclaimButton();
-            setupClaimPumpButton();
-            fabAddReport = findViewById(R.id.fabAddReport);
+            setupChatHintButton();
+            fabAddReport = findViewById(R.id.ibChatInfo);
             fabAddReport.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -174,15 +178,53 @@ public class ExpandableMessageRowView extends RelativeLayout implements
         }
     }
 
-    private void setupClaimPumpButton() {
-        fabStarPump = findViewById(R.id.fabStarPump);
-        fabStarPump.setOnClickListener(new OnClickListener() {
+    Calendar dateAndTime = Calendar.getInstance();
+
+    DateFormat fmtDateAndTime= DateFormat.getDateTimeInstance();
+
+    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            // TODO Auto-generated method stub
+            dateAndTime.set(Calendar.YEAR, year);
+            dateAndTime.set(Calendar.MONTH, monthOfYear);
+            dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+
+    };
+
+    TimePickerDialog.OnTimeSetListener t=new TimePickerDialog.OnTimeSetListener() {
+        public void onTimeSet(TimePicker view, int hourOfDay,
+                              int minute) {
+            dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            dateAndTime.set(Calendar.MINUTE, minute);
+            updateLabel();
+        }
+    };
+
+    private void updateLabel() {
+        etMessage.setText(fmtDateAndTime.format(dateAndTime.getTime()));
+    }
+
+    private void setupChatHintButton() {
+        fabStarAd = findViewById(R.id.ibChatHint);
+        fabStarAd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
 
-//                Intent i = new Intent(mContext, MapActivity.class);
-//                mContext.startActivity(i);
+                performOnClick();
 
+            }
+        });
+    }
+
+    private void performOnClick() {
+        switch (mCondition) {
+            // 0 : PlacePicker
+            case 0:
                 double lat = 37.3770091;
                 double longitude = 37.3770091;
                 LatLng position;
@@ -202,20 +244,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
                 builder.include(fartherAwayPosition);
                 LatLngBounds bounds = builder.build();
 
-//                if (getMap() != null) {
-//
-//                    MarkerOptions options = new MarkerOptions();
-//                    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.me));
-//
-//                    position = new LatLng(lat, longitude);
-//                    options.position(position);
-//                    options.title(ME_TITLE);
-//                    getMap().addMarker(options);
-//
-//                    getMap().animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
-//                }
-
-//                int PLACE_PICKER_REQUEST = 1;
+                int PLACE_PICKER_REQUEST = 0;
 
                 PlacePicker.IntentBuilder intentBuilder =
                         new PlacePicker.IntentBuilder();
@@ -230,20 +259,44 @@ public class ExpandableMessageRowView extends RelativeLayout implements
                 } catch (GooglePlayServicesNotAvailableException e) {
                     e.printStackTrace();
                 }
+                break;
+            // 1 : TimePicker
+            case 1:
+                new TimePickerDialog(mContext,
+                        t,
+                        dateAndTime.get(Calendar.HOUR_OF_DAY),
+                        dateAndTime.get(Calendar.MINUTE),
+                        true).show();
+                break;
+            // 2: PricePicker
+            case 2:
+                break;
+            // 3: AdPicker
+            case 3:
+                break;
+            default:
+ //                Intent i = new Intent(mContext, MapActivity.class);
+//                mContext.startActivity(i);
 
-                //mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                //beginAnimationToRevealNavigationOverviewAndHidePager();
-                //beginAnimationToRevealUnstarFAB();
-
-                //mPump.setIsClaimedByATechnician(true);
-                //rowDelegate.onPumpClaimClicked(mPump);
-            }
-        });
+//                if (getMap() != null) {
+//
+//                    MarkerOptions options = new MarkerOptions();
+//                    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.me));
+//
+//                    position = new LatLng(lat, longitude);
+//                    options.position(position);
+//                    options.title(ME_TITLE);
+//                    getMap().addMarker(options);
+//
+//                    getMap().animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+//                }
+                break;
+        }
     }
 
     private void setupUnclaimButton() {
-        fabUnstarPump = findViewById(R.id.fabStarredIndicator);
-        fabUnstarPump.setOnClickListener(new OnClickListener() {
+        fabUnstarAd = findViewById(R.id.ibAd);
+        fabUnstarAd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 //beginAnimationToRevealStarPumpFAB();
@@ -288,17 +341,17 @@ public class ExpandableMessageRowView extends RelativeLayout implements
         int xpos = 0;
         int ypos = 0;
         int finalRadius = 320; /// Width of the FAB, hopefully
-        Animator revealUnstarAnimation = ViewAnimationUtils.createCircularReveal(fabUnstarPump, xpos, ypos, 0, finalRadius);
+        Animator revealUnstarAnimation = ViewAnimationUtils.createCircularReveal(fabUnstarAd, xpos, ypos, 0, finalRadius);
         Log.d("DBG", String.format("Revealing fabEnd from x:%d, y:%d, width:%d", xpos, ypos, finalRadius));
         revealUnstarAnimation.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
-                fabUnstarPump.setVisibility(View.VISIBLE);
+                fabUnstarAd.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                fabStarPump.setVisibility(View.INVISIBLE);
+                fabStarAd.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -391,8 +444,8 @@ public class ExpandableMessageRowView extends RelativeLayout implements
                 outline.setOval(0, 0, size, size);
             }
         };
-        fabStarPump.setOutlineProvider(viewOutlineProvider);
-        fabUnstarPump.setOutlineProvider(viewOutlineProvider);
+        fabStarAd.setOutlineProvider(viewOutlineProvider);
+        fabUnstarAd.setOutlineProvider(viewOutlineProvider);
         fabAddReport.setOutlineProvider(viewOutlineProvider);
     }
 
@@ -446,8 +499,8 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                fabUnstarPump.setVisibility(View.INVISIBLE);
-                fabStarPump.setVisibility(View.INVISIBLE);
+                fabUnstarAd.setVisibility(View.INVISIBLE);
+                fabStarAd.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -465,7 +518,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
     }
 
     View getCurrentlyActiveButton() {
-        View[] views = {fabUnstarPump, fabStarPump, fabAddReport};
+        View[] views = {fabUnstarAd, fabStarAd, fabAddReport};
         for (View v : views) {
             if (v.getVisibility() == View.VISIBLE) {
                 return v;
@@ -484,7 +537,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
         revealStartButton.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
-                fabStarPump.setVisibility(View.VISIBLE);
+                fabStarAd.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -548,26 +601,26 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
 
     private void populateViewHolder() {
-        viewHolder.tvLocation = (TextView)findViewById(R.id.tvPumpLocation);
-        viewHolder.tvPumpDistance = (TextView)findViewById(R.id.tvPumpDistance);
-        viewHolder.ivStatusIndicator = (ImageView)findViewById(R.id.ivPumpStatusIndicator);
+        viewHolder.tvAdLocation = (TextView)findViewById(R.id.tvAdTitle);
+        viewHolder.tvAdDistance = (TextView)findViewById(R.id.tvAdDistance);
+        viewHolder.ivAdImage = (ImageView)findViewById(R.id.ivAdImage);
     }
 
     public void updateSubviews(Ad theAd, Context context) {
 
         currentInterestedAd = theAd;
-        viewHolder.ivStatusIndicator.setImageResource(0);
-        Picasso.with(getContext()).load(currentInterestedAd.getPhotoUrl()).into(viewHolder.ivStatusIndicator);
-        viewHolder.tvLocation.setText(Html.fromHtml(currentInterestedAd.getTitle()));
-        mPumpFlowLabel.setText(currentInterestedAd.getPrice());
+        viewHolder.ivAdImage.setImageResource(0);
+        Picasso.with(getContext()).load(currentInterestedAd.getPhotoUrl()).into(viewHolder.ivAdImage);
+        viewHolder.tvAdLocation.setText(Html.fromHtml(currentInterestedAd.getTitle()));
+        mtvPriceLabel.setText(currentInterestedAd.getPrice());
 
     }
 
 
 
     public void clearTextViews() {
-        viewHolder.tvLocation.setText("");
-        viewHolder.tvPumpDistance.setText("");
+        viewHolder.tvAdLocation.setText("");
+        viewHolder.tvAdDistance.setText("");
     }
 
     @Override
@@ -586,9 +639,9 @@ public class ExpandableMessageRowView extends RelativeLayout implements
     }
 
     static class ViewHolder {
-        TextView tvLocation;
-        TextView tvPumpDistance;
-        ImageView ivStatusIndicator;
+        TextView tvAdLocation;
+        TextView tvAdDistance;
+        ImageView ivAdImage;
 
     }
 }

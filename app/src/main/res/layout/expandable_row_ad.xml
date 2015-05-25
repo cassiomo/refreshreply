@@ -15,19 +15,19 @@
         android:background="@color/offwhite">
 
         <LinearLayout
-            android:id="@+id/pumpStatusContainer"
+            android:id="@+id/adStatusContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:orientation="vertical">
             <ImageView
-                android:id="@+id/ivPumpStatusIndicator"
+                android:id="@+id/ivAdImage"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:src="@drawable/gumtree"
                 android:layout_margin="4dp"/>
             <TextView
-                android:id="@+id/tvPumpLastUpdated"
+                android:id="@+id/tvAdLastUpdated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/lightGrayTextV2"
@@ -38,10 +38,10 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tvPumpDistance"
+            android:id="@+id/tvAdDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/pumpStatusContainer"
+            android:layout_alignBottom="@id/adStatusContainer"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
             android:includeFontPadding="false"
@@ -52,7 +52,7 @@
             android:text="10 km away" />
 
         <TextView
-            android:id="@+id/tvPumpLocation"
+            android:id="@+id/tvAdTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/darkGrayTextV2"
@@ -60,12 +60,12 @@
             android:fontFamily="sans-serif-light"
             android:text="Some Title"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/pumpStatusContainer"
-            android:layout_toEndOf="@+id/pumpStatusContainer" />
+            android:layout_toRightOf="@+id/adStatusContainer"
+            android:layout_toEndOf="@+id/adStatusContainer" />
 
 
         <TextView
-            android:id="@+id/tvPumpFlowLabel"
+            android:id="@+id/tvAdPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12dp"
@@ -73,8 +73,8 @@
             android:textColor="@color/textGray"
             android:fontFamily="sans-serif-light"
             android:text="$20"
-            android:layout_alignBottom="@id/pumpStatusContainer"
-            android:layout_alignLeft="@id/tvPumpLocation" />
+            android:layout_alignBottom="@id/adStatusContainer"
+            android:layout_alignLeft="@id/tvAdTitle" />
 
 
         <!-- chat -->
@@ -82,7 +82,7 @@
             android:id="@+id/llSend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/pumpStatusContainer"
+            android:layout_below="@id/adStatusContainer"
             android:background="#ffffff"
             android:paddingTop="5dp"
             android:paddingBottom="10dp"
@@ -167,7 +167,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp">
         <ImageButton
-            android:id="@+id/fabStarPump"
+            android:id="@+id/ibChatHint"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_centerInParent="true"
@@ -177,7 +177,7 @@
             android:src="@drawable/ic_star_white_filled"/>
 
         <ImageButton
-            android:id="@+id/fabStarredIndicator"
+            android:id="@+id/ibAd"
             android:visibility="gone"
             android:layout_width="56dp"
             android:layout_height="56dp"
@@ -188,7 +188,7 @@
             android:src="@drawable/ic_star_blue_list"/>
 
         <ImageButton
-            android:id="@+id/fabAddReport"
+            android:id="@+id/ibChatInfo"
             android:visibility="gone"
             android:padding="10dp"
             android:layout_width="56dp"

@@ -113,10 +113,6 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
                 Ad ad = aImageResultAdapter.getItem(position);
                 System.out.println("testing");
                 mListener.onAdListRowSelected(ad);
-//                Intent intent = new Intent(SearchActivity.this, ImageDisplayActivity.class);
-//                Ad result = Ads.get(position);
-//                intent.putExtra("result", result);
-//                startActivity(intent);
             }
         });
         return view;

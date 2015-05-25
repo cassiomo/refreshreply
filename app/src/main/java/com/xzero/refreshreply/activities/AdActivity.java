@@ -39,7 +39,7 @@ public class AdActivity extends Activity implements AdListListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adbrowser);
+        setContentView(R.layout.activity_ads);
 
         ButterKnife.inject(this);
         FragmentManager fragmentManager = getFragmentManager();

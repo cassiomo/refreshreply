@@ -121,30 +121,6 @@ public class SignInActivity extends ActionBarActivity {
 
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode,
-//                                    int resultCode, Intent data) {
-//
-//        if (requestCode == PLACE_PICKER_REQUEST
-//                && resultCode == Activity.RESULT_OK) {
-//
-//            final Place place = PlacePicker.getPlace(data, this);
-//            final CharSequence name = place.getName();
-//            final CharSequence address = place.getAddress();
-//            String attributions = PlacePicker.getAttributions(data);
-//            if (attributions == null) {
-//                attributions = "";
-//            }
-//
-//            mName.setText(name);
-//            mAddress.setText(address);
-//            mAttributions.setText(Html.fromHtml(attributions));
-//
-//        } else {
-//            super.onActivityResult(requestCode, resultCode, data);
-//        }
-//    }
-
     public void onSignIn(View v) {
 
         username = etUsername.getText().toString();
@@ -207,25 +183,4 @@ public class SignInActivity extends ActionBarActivity {
         return false;
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_signin, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 }
