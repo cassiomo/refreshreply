@@ -1,8 +1,10 @@
 package com.xzero.refreshreply.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -42,6 +44,7 @@ public class AdActivity extends Activity implements AdListListener{
     private Boolean isFromPush;
     private String mAdId;
     private String mMessage;
+    private String alarmTime;
     private Ad mAd;
 
     public int PLACE_PICKER_REQUEST = 0;
@@ -63,6 +66,47 @@ public class AdActivity extends Activity implements AdListListener{
             mAdId = receviedIntent.getExtras().getString("adId");
             mMessage = receviedIntent.getExtras().getString("body");
             isFromPush = receviedIntent.getExtras().getBoolean("isFromPush");
+            alarmTime = receviedIntent.getExtras().getString("alarm");
+
+            if (mAdId !=null) {
+                ParseQuery query = ParseQuery.getQuery("Ad");
+                query.whereEqualTo("objectId", mAdId);
+                query.findInBackground(new FindCallback<ParseObject>() {
+
+                    public void done(final List<ParseObject> ads, ParseException e) {
+
+                        //pbLoading.setVisibility(ProgressBar.INVISIBLE);
+                        if (e == null) {
+                            //Log.d("info", "Fetching ads from remote DB. Found " + ads.size());
+                            switchToMessageViewAndSetValue((Ad) ads.get(0), true);
+
+                        } else {
+                            Log.d("error", "Exception while fetching remote ads: " + e);
+                        }
+                    }
+                });
+            }
+
+            if (alarmTime !=null) {
+
+                new AlertDialog.Builder(this)
+                        .setTitle("MeetUp Confirmation")
+                        .setMessage("Did you meet up?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // sale completed
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // sale not completed
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
+
+            }
         }
     }
 
@@ -94,7 +138,7 @@ public class AdActivity extends Activity implements AdListListener{
     @Override
     public void onResume() {
         super.onResume();
-        //if (isFromPush !=null && isFromPush) {
+
         if (mAdId !=null) {
             ParseQuery query = ParseQuery.getQuery("Ad");
             query.whereEqualTo("objectId", mAdId);
@@ -126,6 +170,7 @@ public class AdActivity extends Activity implements AdListListener{
         if (!isFromResume) {
             getMessageFragment().saveMessageInBackground(ad);
         }
+
         switchToMessageView();
     }
 
@@ -196,9 +241,6 @@ public class AdActivity extends Activity implements AdListListener{
             String toastMsg = String.format("Place: %s", place.getName());
             Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
             getMessageFragment().setMessagText(name + " - " + address + " -" + Html.fromHtml(attributions));
-//            mName.setText(name);
-//            mAddress.setText(address);
-//            mAttributions.setText(Html.fromHtml(attributions));
 
         } else {
             super.onActivityResult(requestCode, resultCode, data);

@@ -63,14 +63,7 @@ public class MessageFragment extends Fragment {
     public PagerAdapter mMapPagerAdapter = new PagerAdapter() {
         @Override
         public int getCount() {
-            int returnValue;
-//                if (mAdResultAdapter == null) {
-//                    returnValue = 0;
-//                } else {
-//                    returnValue = mAdResultAdapter.getTotalPumpCount();
-//                }
             return 1;
-            //return returnValue;
         }
 
         @Override
@@ -81,7 +74,6 @@ public class MessageFragment extends Fragment {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-//            Ad currentInterestedAd;
             if (currentInterestedAd == null) {
                 currentInterestedAd = new Ad();
                 currentInterestedAd.setCurrentStatus("Sale");
@@ -218,9 +210,6 @@ public class MessageFragment extends Fragment {
             if (!sUserId.equals(senderId)) {
                 Log.d("FromYou", "FromYou");
                 setConditionAndBlink(messages.get(messages.size() - 1).getBody());
-//                if (messages.get(messages.size() - 1).getBody().contains("when")) {
-//                    Log.d("Found when", "Found when");
-//                }
             } else {
                 Log.d("FromMe", "FromMe");
             }
@@ -231,17 +220,6 @@ public class MessageFragment extends Fragment {
         mMessages = new ArrayList<Message>();
         mAdapter = new ChatListAdapter(this.getActivity(), sUserId, mMessages);
         lvChat.setAdapter(mAdapter);
-//        btSend.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                String body = etMessage.getText().toString();
-//                saveMessageInBackground(body, null);
-//
-//                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
-//            }
-//        });
     }
 
     private void saveMessageInBackground(final String body, final Ad ad) {
@@ -259,7 +237,6 @@ public class MessageFragment extends Fragment {
                 }
             }
         });
-        //etMessage.setText("");
     }
 
     private void sendPush(String body, Ad ad) {
@@ -291,7 +268,7 @@ public class MessageFragment extends Fragment {
     }
 
     public void saveMessageInBackground(Ad ad) {
-        String body = "Interested " + ad.getDescription() + " When?";
+        String body = "Interested: " + ad.getTitle();
         saveMessageInBackground(body, ad);
     }
 
@@ -324,22 +301,6 @@ public class MessageFragment extends Fragment {
     public void onResume() {
         Log.d("DBG", "Message fragment resuming.");
         super.onResume();
-//        final Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                resetMapUIAndCardView();
-//            }
-//        }, 500);
-    }
-
-    public void resetMapUIAndCardView() {
-        resetMapUI();
-        resetCardView();
-    }
-
-    private void resetMapUI() {
-
     }
 
     @Override
@@ -349,11 +310,9 @@ public class MessageFragment extends Fragment {
     }
 
     public void setCurrentlyDisplayedAd(Ad ad) {
-        //int currentPumpIndexInBottomPagerThingy = mPumpListAdapter.getPumpIndexBetweenZeroAndNumberOfPumps(p);
         if (vpChatHint !=null) {
             vpChatHint.setCurrentItem(0, true);
         }
-        //centerMapOnPump(p);
     }
 
     public void setMessagText(String message) {

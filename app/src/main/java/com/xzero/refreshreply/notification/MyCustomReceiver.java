@@ -14,19 +14,37 @@ import com.xzero.refreshreply.activities.SignInActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 public class MyCustomReceiver extends BroadcastReceiver {
    private static final String TAG = "MyCustomReceiver";
    public static final String intentAction = "SEND_PUSH";
+    public static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
+    private Calendar c = Calendar.getInstance();
 
-   @Override
+
+    @Override
    public void onReceive(Context context, Intent intent) {
        if (intent == null) {
            Log.d(TAG, "Receiver intent null");
        } else {
-          // Parse push message and handle accordingly
-          processPush(context, intent);
+
+           if (ACTION_ALARM_RECEIVER.equals(intent.getAction())) {
+               //Log.d(TAG, new Exception().getStackTrace()[0].getMethodName() + " " + c.getTime());
+
+               Intent pupInt = new Intent(context, SignInActivity.class);
+               pupInt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+               Date today = new Date();
+               pupInt.putExtra("alarm", today.toString());
+               context.getApplicationContext().startActivity(pupInt);
+
+           } else {
+
+               // Parse push message and handle accordingly
+               processPush(context, intent);
+           }
        }
    }
    

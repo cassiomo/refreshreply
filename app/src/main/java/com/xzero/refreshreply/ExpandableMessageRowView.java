@@ -2,7 +2,9 @@ package com.xzero.refreshreply;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -55,9 +57,6 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.util.Calendar;
 
-
-//import android.view.animation.Animation;
-
 public class ExpandableMessageRowView extends RelativeLayout implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
@@ -94,7 +93,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
     private ViewHolder viewHolder;
 
-    private static final String TAG = "ExpandableMessageRowView";
+    private static final String TAG = "ExpandableRowView";
 
     public static final double MAP_DISPLAY_DELTA = 0.03;
 
@@ -207,6 +206,19 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
     private void updateLabel() {
         etMessage.setText(fmtDateAndTime.format(dateAndTime.getTime()));
+
+        AlarmManager alarm = (AlarmManager)(((Activity)mContext).getSystemService((Context.ALARM_SERVICE)));
+
+        Intent intent = new Intent(mContext, MyCustomReceiver.class);
+        intent.setAction(MyCustomReceiver.ACTION_ALARM_RECEIVER);
+
+        PendingIntent pintent = PendingIntent.getBroadcast(mContext, 1001, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        alarm.set(AlarmManager.RTC_WAKEUP, dateAndTime.getTimeInMillis(), pintent);
+
+        boolean isWorking = (PendingIntent.getBroadcast(mContext, 1001, intent, PendingIntent.FLAG_NO_CREATE) != null);//just changed the flag
+        Log.d(TAG, "alarm " + (isWorking ? "" : "not") + " working...");
+
     }
 
     private void setupChatHintButton() {
@@ -370,10 +382,6 @@ public class ExpandableMessageRowView extends RelativeLayout implements
     }
 
     private void onAddReport(Context context) {
-//        Intent i = new Intent(context, CreateReportActivity.class);
-//        i.putExtra(CreateReportActivity.EXTRA_PUMP_OBJECT_ID, mPump.getObjectId());
-//        ((Activity)context).startActivityForResult(i, CreateReportActivity.CREATE_REPORT_SUCCESSFUL_OR_NOT_REQUEST_CODE);
-
         toggleExpandedState();
     }
 
@@ -386,8 +394,6 @@ public class ExpandableMessageRowView extends RelativeLayout implements
     public void toggleExpandedState() {
         boolean expanded = detailsContainer.getVisibility() == View.VISIBLE;
         if (expanded) {
-
-            //resetMapUI();
             beginAnimationToRevealStarPumpFAB();
             DropDownAnim anim = new DropDownAnim(detailsContainer, TARGET_DETAILS_HEIGHT, false);
             anim.setDuration(ANIMATE_OUT_DURATION_MILLIS);
