@@ -49,7 +49,7 @@ public class MessageFragment extends Fragment {
     private static String sUserId;
 
     public static final String USER_ID_KEY = "userId";
-    private static final int MAX_CHAT_MESSAGES_TO_SHOW = 1000;
+    private static final int MAX_CHAT_MESSAGES_TO_SHOW = 20;
 
     // Create a handler which can run code periodically
     private Handler handler = new Handler();
@@ -57,6 +57,7 @@ public class MessageFragment extends Fragment {
     private ArrayList<Message> mMessages;
     private ChatListAdapter mAdapter;
     private Ad currentInterestedAd;
+    public ExpandableMessageRowView adRow;
 
 
     public PagerAdapter mMapPagerAdapter = new PagerAdapter() {
@@ -93,22 +94,18 @@ public class MessageFragment extends Fragment {
                 currentInterestedAd.setPhotoUrl("http://thewowstyle.com/wp-content/uploads/2015/04/car-03.jpg");
             }
 
-            final ExpandableMessageRowView adRow = new ExpandableMessageRowView(getActivity(), null);
-            //adRow.rowDelegate = MapFragment.this;
-            //final Ad theAd = mAdResultAdapter.getItem(position);
-            //if (adRow !=null) {
-                adRow.updateSubviews(currentInterestedAd, getActivity());
-                container.addView(adRow);
+            adRow = new ExpandableMessageRowView(getActivity(), null);
+            adRow.updateSubviews(currentInterestedAd, getActivity());
+            container.addView(adRow);
 
-                adRow.setOnClickListener(new View.OnClickListener() {
+            adRow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         adRow.onRowClick();
                     }
                 });
 
-                adRow.setTag(position);
-            //}
+            adRow.setTag(position);
             return adRow;
         }
 
@@ -132,16 +129,14 @@ public class MessageFragment extends Fragment {
         super.onCreate(savedInstanceState);
         startWithCurrentUser();
 
-       // Run the runnable object defined every 100ms
-       handler.postDelayed(runnable, 100);
+       handler.postDelayed(runnable, 1000);
     }
 
-    // Defines a runnable which is run every 100ms
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
             refreshMessages();
-            handler.postDelayed(this, 100);
+            handler.postDelayed(this, 1000);
         }
     };
 
@@ -155,11 +150,6 @@ public class MessageFragment extends Fragment {
         setupMessagePosting();
 
         vpChatHint.setAdapter(getViewPagerAdapter());
-
-
-//        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        ft.add(R.id.vgDetailsContainer, mapFragment);
-//        ft.commit();
 
         vpChatHint.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -212,6 +202,7 @@ public class MessageFragment extends Fragment {
                     mMessages.addAll(messages);
                     mAdapter.notifyDataSetChanged();
                     lvChat.invalidate();
+                    blinkChatIndicator(messages);
                 } else {
                     Log.d("message", "Error: " + e.getMessage());
                 }
@@ -219,21 +210,21 @@ public class MessageFragment extends Fragment {
         });
     }
 
-    private void expandMapContainer() {
-//        if (messages.size() > 0 ) {
-//            String senderId = messages.get(messages.size() - 1).getUserId();
-//            Log.d("message userId", senderId);
-//            Log.d("current userId", sUserId);
-//            if (!sUserId.equals(senderId)) {
-//                Log.d("FromYou", "FromYou");
+    private void blinkChatIndicator(List<Message> messages) {
+        if (messages.size() > 0 ) {
+            String senderId = messages.get(messages.size() - 1).getUserId();
+            Log.d("message userId", senderId);
+            Log.d("current userId", sUserId);
+            if (!sUserId.equals(senderId)) {
+                Log.d("FromYou", "FromYou");
+                setConditionAndBlink(messages.get(messages.size() - 1).getBody());
 //                if (messages.get(messages.size() - 1).getBody().contains("when")) {
 //                    Log.d("Found when", "Found when");
-//                    // pop up the map and log the time to calendar
 //                }
-//            } else {
-//                Log.d("FromMe", "FromMe");
-//            }
-//        }
+            } else {
+                Log.d("FromMe", "FromMe");
+            }
+        }
     }
 
     private void setupMessagePosting() {
@@ -299,9 +290,29 @@ public class MessageFragment extends Fragment {
         //setupMessagePosting();
     }
 
-    public void setCurrentInterestedAd(Ad ad) {
+    public void saveMessageInBackground(Ad ad) {
         String body = "Interested " + ad.getDescription() + " When?";
         saveMessageInBackground(body, ad);
+    }
+
+    public void setCurrentInterestedAd(Ad ad, String message) {
+        currentInterestedAd = ad;
+        if (adRow !=null) {
+            adRow.updateSubviews(currentInterestedAd, getActivity());
+        }
+    }
+
+    private void setConditionAndBlink(String message) {
+        if (message !=null) {
+            if (message.contains("where")) {
+                adRow.mCondition = 0;
+            } else if (message.contains("when")) {
+                adRow.mCondition = 1;
+            } else if (message.contains("anything")) {
+                adRow.mCondition = 2;
+            }
+        }
+        // blink
     }
 
     @Override
@@ -313,13 +324,13 @@ public class MessageFragment extends Fragment {
     public void onResume() {
         Log.d("DBG", "Message fragment resuming.");
         super.onResume();
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                resetMapUIAndCardView();
-            }
-        }, 500);
+//        final Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                resetMapUIAndCardView();
+//            }
+//        }, 500);
     }
 
     public void resetMapUIAndCardView() {
@@ -343,6 +354,10 @@ public class MessageFragment extends Fragment {
             vpChatHint.setCurrentItem(0, true);
         }
         //centerMapOnPump(p);
+    }
+
+    public void setMessagText(String message) {
+        adRow.etMessage.setText(message);
     }
 
 }

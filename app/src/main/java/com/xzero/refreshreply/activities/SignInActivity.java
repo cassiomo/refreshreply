@@ -43,6 +43,8 @@ public class SignInActivity extends ActionBarActivity {
 
     private Ad ad;
 
+    private String mAdId;
+
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
         @Override
@@ -66,24 +68,20 @@ public class SignInActivity extends ActionBarActivity {
         //getActionBar().hide();
         ButterKnife.inject(this);
 
-        // hack
-        isFromPush = false;
-        String adId = getIntent().getStringExtra("adId");
-
-        // coming from the message application
-        if (adId == null) {
-            // coming from the push open
-            Bundle extras = getIntent().getExtras();
-
-            if (extras != null) {
-                isFromPush = true;
-                ad = (Ad) extras.getSerializable("ad");
-                if (ad != null) {
-                    adId = ad.getObjectId();
-                }
-            }
-        } else {
+        Intent receviedIntent = getIntent();
+        Bundle extras = receviedIntent.getExtras();
+        if (extras != null){
+            mAdId = extras.getString("adId");
             isFromPush = true;
+//            String jsonData = extras.getString("com.parse.Data");
+//            try {
+//                if (jsonData != null) {
+//                    JSONObject jObj = new JSONObject(jsonData);
+//                    mAdId = jObj.getString("adId");
+//                }
+//            } catch (org.json.JSONException e) {
+//                // exception.
+//            }
         }
 
         final VideoView mVideoView = (VideoView) findViewById(R.id.vvMovieBackground);
@@ -112,6 +110,7 @@ public class SignInActivity extends ActionBarActivity {
             Log.d("debug", "Current user is " + currentUser.toString());
             Intent intent = new Intent(getApplicationContext(), AdActivity.class);
             intent.putExtra("isFromPush", isFromPush);
+            intent.putExtra("adId", mAdId);
             startActivity(intent);
         } else {
             Log.d("debug", "No user logged in!");

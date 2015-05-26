@@ -90,7 +90,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
     private ViewGroup detailsChat;
     private Button btSend;
-    private EditText etMessage;
+    public EditText etMessage;
 
     private ViewHolder viewHolder;
 
@@ -98,7 +98,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
     public static final double MAP_DISPLAY_DELTA = 0.03;
 
-    int mCondition = 0;
+    public int mCondition = 0;
 
     public ExpandableMessageRowView(final Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -211,6 +211,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
     private void setupChatHintButton() {
         fabStarAd = findViewById(R.id.ibChatHint);
+
         fabStarAd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -585,6 +586,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
             obj.put("alert", "New Sale");
             obj.put("action", MyCustomReceiver.intentAction);
             obj.put("adId", ad.getObjectId());
+            obj.put("body", body);
 
             ParsePush push = new ParsePush();
             ParseQuery query = ParseInstallation.getQuery();

@@ -18,6 +18,7 @@ public class MyPushOpenReceiver extends ParsePushBroadcastReceiver {
         //String adId = intent.getStringExtra("adId");
 
         Intent i = new Intent(context, SignInActivity.class);
+
         i.putExtras(intent.getExtras());
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);

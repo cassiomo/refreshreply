@@ -111,7 +111,6 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Ad ad = aImageResultAdapter.getItem(position);
-                System.out.println("testing");
                 mListener.onAdListRowSelected(ad);
             }
         });
