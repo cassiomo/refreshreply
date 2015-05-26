@@ -12,13 +12,10 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
-import com.xzero.refreshreply.AdPersister;
 import com.xzero.refreshreply.R;
 import com.xzero.refreshreply.adapters.ImageResultAdapter;
 import com.xzero.refreshreply.helpers.NetworkUtil;
@@ -51,6 +48,8 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
     private ArrayList<Ad> ads;
     ImageResultAdapter aImageResultAdapter;
     private final int REQUEST_CODE = 20;
+
+    public int categoryId = 1;
 
     private EndlessScrollListener endlessScrollListener = new EndlessScrollListener() {
         @Override
@@ -97,8 +96,6 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
                 .listener(this)
                 .setup(ptrlAds);
 
-
-        //aImageResultAdapter = new ImageResultAdapter(this.getActivity(), ads);
 
         aImageResultAdapter = new ImageResultAdapter((Activity)mListener, ads);
 
@@ -159,38 +156,43 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
     });
     }
 
-    private void unpinAndRepin(final List<ParseObject> ads) {
-
-        Log.d("debug", "Unpinning previously saved objects");
-        ParseObject.unpinAllInBackground(AdPersister.ALL_ADS, ads,
-                new DeleteCallback() {
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            // There was some error.
-                            return;
-                        } else {
-                            Log.d("info", ads.size() + " previous cached ads deleted.");
-                        }
-                    }
-                }
-        );
-        // Add the latest results for this query to the cache.
-        Log.d("debug", "Pinning newly fetched ads " + ads.size());
-        ParseObject.pinAllInBackground(AdPersister.ALL_ADS, ads, new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.d("debug", "Pinned newly fetched ads " + ads.size());
-                } else {
-                    Log.d("debug", "Couldn't pin ads: " + e.toString());
-                }
-            }
-        });
-    }
+//    private void unpinAndRepin(final List<ParseObject> ads) {
+//
+//        Log.d("debug", "Unpinning previously saved objects");
+//        ParseObject.unpinAllInBackground(AdPersister.ALL_ADS, ads,
+//                new DeleteCallback() {
+//                    public void done(ParseException e) {
+//                        if (e != null) {
+//                            // There was some error.
+//                            return;
+//                        } else {
+//                            Log.d("info", ads.size() + " previous cached ads deleted.");
+//                        }
+//                    }
+//                }
+//        );
+//        // Add the latest results for this query to the cache.
+//        Log.d("debug", "Pinning newly fetched ads " + ads.size());
+//        ParseObject.pinAllInBackground(AdPersister.ALL_ADS, ads, new SaveCallback() {
+//            @Override
+//            public void done(ParseException e) {
+//                if (e == null) {
+//                    Log.d("debug", "Pinned newly fetched ads " + ads.size());
+//                } else {
+//                    Log.d("debug", "Couldn't pin ads: " + e.toString());
+//                }
+//            }
+//        });
+//    }
 
     private void fetchAdsFromRemote(ParseQuery<ParseObject> query) {
 
         Log.d("debug", "Fetching ads from remote DB.");
+
+
+        query.whereEqualTo("categoryId", String.valueOf(categoryId));
+
+
         query.findInBackground(new FindCallback<ParseObject>() {
 
             public void done(final List<ParseObject> ads, ParseException e) {
@@ -201,10 +203,10 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
                     addAdsToAdapter(ads);
                     mListener.onListRefreshederested();
 
-                    // Unpin previously cached data and re-pin the newly fetched.
-                    if (ads != null && !ads.isEmpty()) {
-                        unpinAndRepin(ads);
-                    }
+//                    // Unpin previously cached data and re-pin the newly fetched.
+//                    if (ads != null && !ads.isEmpty()) {
+//                        unpinAndRepin(ads);
+//                    }
 
                 } else {
                     Log.d("error", "Exception while fetching remote ads: " + e);
@@ -264,27 +266,5 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
     private void fetchAndShowRemoteData() {
         prepareForDataFetch();
         fetchAdsFromRemote(ParseQuery.getQuery("Ad"));
-
     }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        // REQUEST_CODE is defined above
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == REQUEST_CODE) {
-//            if (data !=null) {
-//                Setting newSetting = (Setting) data.getSerializableExtra("setting");
-//                if (mainSetting == null) {
-//                    mainSetting = new Setting();
-//                }
-//                mainSetting.colorFilter = newSetting.colorFilter;
-//                mainSetting.imageType = newSetting.imageType;
-//                mainSetting.imageSize = newSetting.imageSize;
-//                mainSetting.siteFilter = newSetting.siteFilter;
-//
-//                Toast.makeText(this, "New Setting is: " + mainSetting, Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
 }

@@ -18,6 +18,14 @@ public class Ad extends ParseObject implements Serializable {
 
     }
 
+    public void setCategoryId(String categoryId) {
+        put("categoryId", categoryId);
+    }
+
+    public String getCategoryId() {
+        return getString("categoryId");
+    }
+
     public void setTitle(String title) {
         put("title", title) ;
     }

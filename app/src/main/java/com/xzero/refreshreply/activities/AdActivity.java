@@ -68,25 +68,6 @@ public class AdActivity extends Activity implements AdListListener{
             isFromPush = receviedIntent.getExtras().getBoolean("isFromPush");
             alarmTime = receviedIntent.getExtras().getString("alarm");
 
-            if (mAdId !=null) {
-                ParseQuery query = ParseQuery.getQuery("Ad");
-                query.whereEqualTo("objectId", mAdId);
-                query.findInBackground(new FindCallback<ParseObject>() {
-
-                    public void done(final List<ParseObject> ads, ParseException e) {
-
-                        //pbLoading.setVisibility(ProgressBar.INVISIBLE);
-                        if (e == null) {
-                            //Log.d("info", "Fetching ads from remote DB. Found " + ads.size());
-                            switchToMessageViewAndSetValue((Ad) ads.get(0), true);
-
-                        } else {
-                            Log.d("error", "Exception while fetching remote ads: " + e);
-                        }
-                    }
-                });
-            }
-
             if (alarmTime !=null) {
 
                 new AlertDialog.Builder(this)
@@ -95,6 +76,7 @@ public class AdActivity extends Activity implements AdListListener{
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // sale completed
+                                getImageDisplayFragment().categoryId = 2;
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

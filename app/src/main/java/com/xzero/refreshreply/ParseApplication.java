@@ -55,10 +55,11 @@ public class ParseApplication extends Application {
         });
         */
 
-//        for (int i =0 ; i < 10; i++) {
+//        for (int i = 1 ; i < 3; i++) {
 //            Ad ad = new Ad();
 //            ad.setCurrentStatus("Sale");
 //            ad.setPrice("$" + i + "0");
+//            ad.setCategoryId("1");
 //            ad.setAddress(i + "1" + "20" + i + " Blacow Rd Fremont, CA");
 //            ad.setDescription("car for sell " + i);
 //            ad.setLocation(new ParseGeoPoint(37.5059315 + i, -121.9469625 - i));
@@ -71,6 +72,27 @@ public class ParseApplication extends Application {
 //                ad.setTitle("Old car");
 //                ad.setOwnerId("Hh0IG6erg6");
 //                ad.setPhotoUrl("http://wallpapers111.com/wp-content/uploads/2015/03/Old-Cars-Wallpaper-660x330.jpg");
+//            }
+//            ad.saveInBackground();
+//        }
+//
+//        for (int i = 1 ; i < 3; i++) {
+//            Ad ad = new Ad();
+//            ad.setCurrentStatus("Sale");
+//            ad.setPrice("$" + i + "0");
+//            ad.setCategoryId("2");
+//            ad.setAddress(i + "1" + "20" + i + " Blacow Rd Fremont, CA");
+//            ad.setDescription("car mug for sell " + i);
+//            ad.setLocation(new ParseGeoPoint(37.5059315 + i, -121.9469625 - i));
+//            int odd = i % 2;
+//            if (odd == 1) {
+//                ad.setOwnerId("fINhuLpnZw");
+//                ad.setTitle("New Car Mug");
+//                ad.setPhotoUrl("http://static.artfire.com/uploads/product/0/50/39050/3339050/3339050/large/blue_classic_car_mini_cooper_mug_art_decorative_gifts_collectible_0003_1989b1a8.jpg");
+//            } else {
+//                ad.setTitle("Old Car Mug");
+//                ad.setOwnerId("Hh0IG6erg6");
+//                ad.setPhotoUrl("http://static.artfire.com/uploads/product/6/6/39006/3339006/3339006/large/red_classic_volk_beagle_mini_car_ceramic_mug_handmade_gifts_0002_7ac45798.jpg");
 //            }
 //            ad.saveInBackground();
 //        }
