@@ -53,9 +53,6 @@ public class ImageResultAdapter extends ArrayAdapter<Ad>  {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-//        ImageView imageView = (ImageView) convertView.findViewById(R.id.ivImage);
-//        TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-
         viewHolder.imageView.setImageResource(0);
 
         viewHolder.tvTitle.setText(Html.fromHtml(imageResult.getTitle()));

@@ -2,7 +2,11 @@ package com.xzero.refreshreply.fragments;
 
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Fragment;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -23,6 +27,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.xzero.refreshreply.ExpandableMessageRowView;
 import com.xzero.refreshreply.R;
+import com.xzero.refreshreply.activities.AdActivity;
 import com.xzero.refreshreply.adapters.ChatListAdapter;
 import com.xzero.refreshreply.adapters.ImageResultAdapter;
 import com.xzero.refreshreply.models.Ad;
@@ -32,8 +37,12 @@ import com.xzero.refreshreply.notification.MyCustomReceiver;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -58,6 +67,7 @@ public class MessageFragment extends Fragment {
     private ChatListAdapter mAdapter;
     private Ad currentInterestedAd;
     public ExpandableMessageRowView adRow;
+    public boolean isAlarmSet;
 
 
     public PagerAdapter mMapPagerAdapter = new PagerAdapter() {
@@ -231,7 +241,7 @@ public class MessageFragment extends Fragment {
             public void done(ParseException e) {
                 receiveMessage();
 
-                if (ad !=null) {
+                if (ad != null) {
                     // send Push notification
                     sendPush(body, ad);
                 }
@@ -287,9 +297,35 @@ public class MessageFragment extends Fragment {
                 adRow.mCondition = 1;
             } else if (message.contains("anything")) {
                 adRow.mCondition = 2;
+            } else if (message.contains("2015")) {
+                if (!AdActivity.isAlarmSet) {
+                    setAlarm(message);
+                    AdActivity.isAlarmSet = true;
+                }
             }
         }
         // blink
+    }
+
+    private void setAlarm(String message) {
+        try {
+            DateFormat inputDateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm:ss", Locale.ENGLISH);
+            Date strToDate = inputDateFormat
+                    .parse(message);
+
+            Intent intent = new Intent(getActivity(), MyCustomReceiver.class);
+            intent.setAction(MyCustomReceiver.ACTION_ALARM_RECEIVER);
+
+            PendingIntent pintent = PendingIntent.getBroadcast(getActivity(), 1002, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            AlarmManager alarm = (AlarmManager) (getActivity().getSystemService((Context.ALARM_SERVICE)));
+
+            alarm.set(AlarmManager.RTC_WAKEUP, strToDate.getTime(), pintent);
+
+            boolean isWorking = (PendingIntent.getBroadcast(getActivity(), 1002, intent, PendingIntent.FLAG_NO_CREATE) != null);//just changed the flag
+            Log.d(TAG, "alarm " + (isWorking ? "" : "not") + " working...");
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

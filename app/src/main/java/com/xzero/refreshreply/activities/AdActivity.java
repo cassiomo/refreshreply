@@ -45,6 +45,9 @@ public class AdActivity extends Activity implements AdListListener{
     private String mAdId;
     private String mMessage;
     private String alarmTime;
+
+    public static boolean isAlarmSet  = false;
+
     private Ad mAd;
 
     public int PLACE_PICKER_REQUEST = 0;

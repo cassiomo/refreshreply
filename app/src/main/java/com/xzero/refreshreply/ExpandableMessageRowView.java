@@ -115,7 +115,16 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
                 @Override
                 public void onClick(View v) {
-                    String body = etMessage.getText().toString();
+                    String body ;
+//
+//                    if (etMessage != null && etMessage.getText().length() > 0 &&
+//                            etMessage.getText().toString().startsWith("date")) {
+//                        String time = etMessage.getText().toString().split(" ")[1];
+//                        body = time;
+//                    } else {
+                        body = etMessage.getText().toString();
+//                    }
+
                     saveMessageInBackground(body, null);
 
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -207,6 +216,8 @@ public class ExpandableMessageRowView extends RelativeLayout implements
     private void updateLabel() {
         etMessage.setText(fmtDateAndTime.format(dateAndTime.getTime()));
 
+        //etMessage.setText("date " + dateAndTime.getTime().toString());
+
         AlarmManager alarm = (AlarmManager)(((Activity)mContext).getSystemService((Context.ALARM_SERVICE)));
 
         Intent intent = new Intent(mContext, MyCustomReceiver.class);
@@ -287,6 +298,9 @@ public class ExpandableMessageRowView extends RelativeLayout implements
             // 3: AdPicker
             case 3:
                 break;
+            // 4: set the local notifcation time
+            case 4:
+
             default:
  //                Intent i = new Intent(mContext, MapActivity.class);
 //                mContext.startActivity(i);
