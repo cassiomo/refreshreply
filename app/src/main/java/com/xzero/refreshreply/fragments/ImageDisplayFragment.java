@@ -55,7 +55,6 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
         @Override
         public void onLoadMore(int page, int totalItemsCount) {
             Log.i("INFO", "Loading more items");
-            //loadMoreDataFromApi(page);
         }
     };
 
@@ -67,7 +66,7 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
     public void onResume() {
         Log.d("DBG", "List fragment onResume");
         super.onResume();
-        fetchAndShowData();
+        //fetchAndShowData();
     }
 
     @Override
@@ -80,7 +79,7 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ads = new ArrayList<Ad>();
-      aImageResultAdapter = new ImageResultAdapter(this.getActivity(), ads);
+        aImageResultAdapter = new ImageResultAdapter(this.getActivity(), ads);
     }
 
     @Override
@@ -125,36 +124,34 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
         }
     }
 
-    private void fetchAdsInBackground(final ParseQuery<ParseObject> query) {
-
-        pbLoading.setVisibility(ProgressBar.INVISIBLE);
-        Log.d("debug", "Using ads fetched from local DB.");
-
-        //query.fromPin(AdsPersister.ALL_ads);
-
-        query.findInBackground(new FindCallback<ParseObject>() {
-
-        public void done(final List<ParseObject> ads, ParseException e) {
-
-            if (e == null) {
-                mListener.onListRefreshederested();
-
-                Log.d("info", "Fetching ads from local DB. Found " + ads.size());
-
-                if (ads.size() == 0) {
-                    fetchAdsFromRemote(ParseQuery.getQuery("Ad"));
-                } else {
-                    pbLoading.setVisibility(ProgressBar.INVISIBLE);
-                    Log.d("debug", "Using ads fetched from local DB.");
-                    addAdsToAdapter(ads);
-                }
-            } else {
-                Log.d("error", "Exception while fetching ads: " + e);
-                pbLoading.setVisibility(ProgressBar.INVISIBLE);
-            }
-        }
-    });
-    }
+//    private void fetchAdsInBackground(final ParseQuery<ParseObject> query) {
+//
+//        pbLoading.setVisibility(ProgressBar.INVISIBLE);
+//        Log.d("debug", "Using ads fetched from remote");
+//
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//
+//        public void done(final List<ParseObject> ads, ParseException e) {
+//
+//            if (e == null) {
+//                mListener.onListRefreshederested();
+//
+//                Log.d("info", "Fetching ads from local DB. Found " + ads.size());
+//
+//                if (ads.size() == 0) {
+//                    fetchAdsFromRemote(ParseQuery.getQuery("Ad"));
+//                } else {
+//                    pbLoading.setVisibility(ProgressBar.INVISIBLE);
+//                    Log.d("debug", "Using ads fetched from local DB.");
+//                    addAdsToAdapter(ads);
+//                }
+//            } else {
+//                Log.d("error", "Exception while fetching ads: " + e);
+//                pbLoading.setVisibility(ProgressBar.INVISIBLE);
+//            }
+//        }
+//    });
+//    }
 
 //    private void unpinAndRepin(final List<ParseObject> ads) {
 //
@@ -203,11 +200,6 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
                     addAdsToAdapter(ads);
                     mListener.onListRefreshederested();
 
-//                    // Unpin previously cached data and re-pin the newly fetched.
-//                    if (ads != null && !ads.isEmpty()) {
-//                        unpinAndRepin(ads);
-//                    }
-
                 } else {
                     Log.d("error", "Exception while fetching remote ads: " + e);
                 }
@@ -242,7 +234,7 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
 
     private void fetchAndShowData() {
         prepareForDataFetch();
-        fetchAdsInBackground(ParseQuery.getQuery("Ad"));
+        fetchAdsFromRemote(ParseQuery.getQuery("Ad"));
     }
 
     // Pull to refresh fetches data from the remote server.
