@@ -20,13 +20,16 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.xzero.refreshreply.R;
 import com.xzero.refreshreply.fragments.ImageDisplayFragment;
 import com.xzero.refreshreply.fragments.MessageFragment;
 import com.xzero.refreshreply.listeners.AdListListener;
 import com.xzero.refreshreply.models.Ad;
+import com.xzero.refreshreply.models.Message;
 
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -41,9 +44,8 @@ public class AdActivity extends Activity implements AdListListener{
 
     private ListAdPagerAdapter mListAdPagerAdapter;
 
-    private Boolean isFromPush;
     private String mAdId;
-    private String mMessage;
+    private String mMessageId;
     private String alarmTime;
 
     public static boolean isAlarmSet  = false;
@@ -67,34 +69,114 @@ public class AdActivity extends Activity implements AdListListener{
         Intent receviedIntent = getIntent();
         if (receviedIntent.getExtras() !=null) {
             mAdId = receviedIntent.getExtras().getString("adId");
-            mMessage = receviedIntent.getExtras().getString("body");
-            isFromPush = receviedIntent.getExtras().getBoolean("isFromPush");
+            mMessageId = receviedIntent.getExtras().getString("messageId");
             alarmTime = receviedIntent.getExtras().getString("alarm");
 
             if (alarmTime !=null) {
 
-                new AlertDialog.Builder(this)
-                        .setTitle("MeetUp Confirmation")
-                        .setMessage("Did you meet up?")
+                if (mAdId != null && mMessageId !=null) {
+                    ParseQuery query = ParseQuery.getQuery("Ad");
+                    query.whereEqualTo("objectId", mAdId);
+                    query.findInBackground(new FindCallback<ParseObject>() {
+
+                        public void done(final List<ParseObject> ads, ParseException e) {
+
+                            if (e == null) {
+                                Ad ad = null;
+                                if (ads.size() > 0) {
+                                    ad = (Ad) ads.get(0);
+                                }
+                                ParseQuery query = ParseQuery.getQuery("Message");
+                                query.whereEqualTo("objectId", mMessageId);
+                                final Ad finalAd = ad;
+                                query.findInBackground(new FindCallback<ParseObject>() {
+
+                                    public void done(final List<ParseObject> messages, ParseException e) {
+
+                                        if (e == null) {
+                                            Message msg = null;
+                                            if (messages.size() > 0) {
+                                                msg = (Message)messages.get(0);
+                                            }
+                                            if (msg !=null && finalAd !=null) {
+                                                waitUpAlarm(msg, finalAd);
+                                            }
+
+                                        } else {
+                                            Log.d("error", "Exception while fetching remote ads: " + e);
+                                        }
+                                    }
+                                });
+                            } else {
+                                Log.d("error", "Exception while fetching remote ads: " + e);
+                            }
+                        }
+                    });
+                }
+//                new AlertDialog.Builder(this)
+//                        .setTitle("Meetup Confirmation")
+//                        .setMessage("Did you meet with?")
+//                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                // sale completed
+//                                getImageDisplayFragment().categoryId = 2;
+//                                getImageDisplayFragment().fetchAndShowData();
+//
+//                            }
+//                        })
+//                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                // sale not completed
+//                            }
+//                        })
+//                        .setIcon(android.R.drawable.ic_dialog_alert)
+//                        .show();
+            }
+        }
+    }
+
+    private void waitUpAlarm(final Message msg, final Ad ad) {
+        new AlertDialog.Builder(this)
+                .setTitle(ad.getTitle() + " Meetup")
+                .setMessage("Did you meet with " + msg.getUserName() + "?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // sale completed
+                        final ParseUser currentUser = ParseUser.getCurrentUser();
+                        if (msg.getUserId() == currentUser.getObjectId()) {
+                            // buyer
+                            getImageDisplayFragment().categoryId = 2;
+                            getImageDisplayFragment().fetchAndShowData();
+                        } else {
+                            // seller
+                            wakeUpCoupon();
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // sale not completed
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void wakeUpCoupon() {
+
+        String uniqueString = UUID.randomUUID().toString();
+
+        new AlertDialog.Builder(this)
+                .setTitle("Thank you - Post Ad Coupon")
+                .setMessage(uniqueString)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // sale completed
-                                getImageDisplayFragment().categoryId = 2;
-                                getImageDisplayFragment().fetchAndShowData();
 
                             }
                         })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // sale not completed
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-
-
-            }
-        }
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     @Override
@@ -136,7 +218,9 @@ public class AdActivity extends Activity implements AdListListener{
                     //pbLoading.setVisibility(ProgressBar.INVISIBLE);
                     if (e == null) {
                         //Log.d("info", "Fetching ads from remote DB. Found " + ads.size());
-                        switchToMessageViewAndSetValue((Ad)ads.get(0), true);
+                        if (ads.size() > 0) {
+                            switchToMessageViewAndSetValue((Ad) ads.get(0), true);
+                        }
 
                     } else {
                         Log.d("error", "Exception while fetching remote ads: " + e);
@@ -153,7 +237,7 @@ public class AdActivity extends Activity implements AdListListener{
     }
 
     public void switchToMessageViewAndSetValue(Ad ad, boolean isFromResume) {
-        getMessageFragment().setCurrentInterestedAd(ad, mMessage);
+        getMessageFragment().setCurrentInterestedAd(ad);
         if (!isFromResume) {
             getMessageFragment().saveMessageInBackground(ad);
         }

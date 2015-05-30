@@ -39,7 +39,7 @@ public class SignInActivity extends ActionBarActivity {
     private String username;
     private String password;
 
-    private boolean isFromPush;
+//    private boolean isFromPush;
 
     private String alarmTime;
 
@@ -74,7 +74,7 @@ public class SignInActivity extends ActionBarActivity {
         Bundle extras = receviedIntent.getExtras();
         if (extras != null){
             mAdId = extras.getString("adId");
-            isFromPush = extras.getBoolean("isFromPush");
+//            isFromPush = extras.getBoolean("isFromPush");
             alarmTime = extras.getString("alarm");
         }
 
@@ -103,7 +103,7 @@ public class SignInActivity extends ActionBarActivity {
         if (currentUser != null) {
             Log.d("debug", "Current user is " + currentUser.toString());
             Intent intent = new Intent(getApplicationContext(), AdActivity.class);
-            intent.putExtra("isFromPush", isFromPush);
+//            intent.putExtra("isFromPush", isFromPush);
             intent.putExtra("adId", mAdId);
             intent.putExtra("alarm", alarmTime);
             startActivity(intent);

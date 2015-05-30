@@ -20,11 +20,8 @@ import android.widget.ListView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseInstallation;
-import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.xzero.refreshreply.ExpandableMessageRowView;
 import com.xzero.refreshreply.R;
 import com.xzero.refreshreply.activities.AdActivity;
@@ -33,9 +30,7 @@ import com.xzero.refreshreply.adapters.ImageResultAdapter;
 import com.xzero.refreshreply.models.Ad;
 import com.xzero.refreshreply.models.Message;
 import com.xzero.refreshreply.notification.MyCustomReceiver;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.xzero.refreshreply.queries.MessageQuery;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -67,8 +62,6 @@ public class MessageFragment extends Fragment {
     private ChatListAdapter mAdapter;
     private Ad currentInterestedAd;
     public ExpandableMessageRowView adRow;
-    public boolean isAlarmSet;
-
 
     public PagerAdapter mMapPagerAdapter = new PagerAdapter() {
         @Override
@@ -229,48 +222,13 @@ public class MessageFragment extends Fragment {
     }
 
     private void saveMessageInBackground(final String body, final Ad ad) {
-        Message message = new Message();
-        message.setUserId(sUserId);
-        message.setBody(body);
-        message.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                receiveMessage();
-
-                if (ad != null) {
-                    // send Push notification
-                    sendPush(body, ad);
-                }
-            }
-        });
+        MessageQuery.saveMessageInBackground(body, ad);
     }
 
-    private void sendPush(String body, Ad ad) {
-
-        JSONObject obj;
-        try {
-            obj = new JSONObject();
-            obj.put("alert", "New Sale");
-            obj.put("action", MyCustomReceiver.intentAction);
-            obj.put("adId", ad.getObjectId());
-
-            ParsePush push = new ParsePush();
-            ParseQuery query = ParseInstallation.getQuery();
-
-            // Push the notification to Android users
-            query.whereEqualTo("deviceType", "android");
-            push.setQuery(query);
-            push.setData(obj);
-            push.sendInBackground();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     // Get the userId from the cached currentUser object
     private void startWithCurrentUser() {
         sUserId = ParseUser.getCurrentUser().getObjectId();
-        //setupMessagePosting();
     }
 
     public void saveMessageInBackground(Ad ad) {
@@ -278,7 +236,7 @@ public class MessageFragment extends Fragment {
         saveMessageInBackground(body, ad);
     }
 
-    public void setCurrentInterestedAd(Ad ad, String message) {
+    public void setCurrentInterestedAd(Ad ad) {
         currentInterestedAd = ad;
         if (adRow !=null) {
             adRow.updateSubviews(currentInterestedAd, getActivity());
@@ -311,6 +269,10 @@ public class MessageFragment extends Fragment {
 
             Intent intent = new Intent(getActivity(), MyCustomReceiver.class);
             intent.setAction(MyCustomReceiver.ACTION_ALARM_RECEIVER);
+            intent.putExtra("adId", currentInterestedAd.getObjectId());
+            if (MessageQuery.mMessageId !=null) {
+                intent.putExtra("messageId", MessageQuery.mMessageId);
+            }
 
             PendingIntent pintent = PendingIntent.getBroadcast(getActivity(), 1002, intent, PendingIntent.FLAG_CANCEL_CURRENT);
             AlarmManager alarm = (AlarmManager) (getActivity().getSystemService((Context.ALARM_SERVICE)));

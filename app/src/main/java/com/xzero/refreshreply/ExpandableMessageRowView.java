@@ -39,20 +39,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.parse.ParseException;
-import com.parse.ParseInstallation;
-import com.parse.ParsePush;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 import com.xzero.refreshreply.helpers.GPSTracker;
 import com.xzero.refreshreply.models.Ad;
-import com.xzero.refreshreply.models.Message;
 import com.xzero.refreshreply.notification.MyCustomReceiver;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.xzero.refreshreply.queries.MessageQuery;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -581,46 +572,9 @@ public class ExpandableMessageRowView extends RelativeLayout implements
     }
 
     private void saveMessageInBackground(final String body, final Ad ad) {
-        Message message = new Message();
-        String sUserId = ParseUser.getCurrentUser().getObjectId();
-        message.setUserId(sUserId);
-        message.setBody(body);
-        message.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-
-                if (ad != null) {
-                    // send Push notification
-                    sendPush(body, ad);
-                }
-            }
-        });
+        MessageQuery.saveMessageInBackground(body, ad);
         etMessage.setText("");
     }
-
-    private void sendPush(String body, Ad ad) {
-
-        JSONObject obj;
-        try {
-            obj = new JSONObject();
-            obj.put("alert", "New Sale");
-            obj.put("action", MyCustomReceiver.intentAction);
-            obj.put("adId", ad.getObjectId());
-            obj.put("body", body);
-
-            ParsePush push = new ParsePush();
-            ParseQuery query = ParseInstallation.getQuery();
-
-            // Push the notification to Android users
-            query.whereEqualTo("deviceType", "android");
-            push.setQuery(query);
-            push.setData(obj);
-            push.sendInBackground();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     private void populateViewHolder() {
         viewHolder.tvAdLocation = (TextView)findViewById(R.id.tvAdTitle);
@@ -637,8 +591,6 @@ public class ExpandableMessageRowView extends RelativeLayout implements
         mtvPriceLabel.setText(currentInterestedAd.getPrice());
 
     }
-
-
 
     public void clearTextViews() {
         viewHolder.tvAdLocation.setText("");
