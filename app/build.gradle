@@ -34,17 +34,19 @@ dependencies {
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.nhaarman.listviewanimations:library:2.6.0'
     compile 'com.github.chrisbanes.actionbarpulltorefresh:library:+'
+
+    compile 'com.etsy.android.grid:library:1.0.5'
     //Core card library
-    compile 'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
+    //compile 'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
 
     //Optional for built-in cards
-    compile 'com.github.gabrielemariotti.cards:cardslib-cards:2.1.0'
+    //compile 'com.github.gabrielemariotti.cards:cardslib-cards:2.1.0'
 
     //Optional for RecyclerView
-    compile 'com.github.gabrielemariotti.cards:cardslib-recyclerview:2.1.0'
+    //compile 'com.github.gabrielemariotti.cards:cardslib-recyclerview:2.1.0'
 
     //Optional for staggered grid view support
-    compile 'com.github.gabrielemariotti.cards:cardslib-extra-staggeredgrid:2.1.0'
+    //compile 'com.github.gabrielemariotti.cards:cardslib-extra-staggeredgrid:2.1.0'
 
     //Optional for drag and drop support
     //compile 'com.github.gabrielemariotti.cards:cardslib-extra-dragdrop:2.1.0'

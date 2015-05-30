@@ -24,8 +24,17 @@
                 android:id="@+id/ivAdImage"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/gumtree"
                 android:layout_margin="4dp"/>
+            <!--
+            <ImageView
+                android:id="@+id/ivAdImage"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/gumtree"
+                android:layout_margin="4dp"/>
+                -->
             <TextView
                 android:id="@+id/tvAdLastUpdated"
                 android:layout_width="wrap_content"

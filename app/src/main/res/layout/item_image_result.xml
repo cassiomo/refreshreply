@@ -1,16 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:id="@+id/panel_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants">
+
+    <!--
+    <com.etsy.android.grid.util.DynamicHeightImageView
+        android:id="@+id/ivImage"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"/>
+
+    -->
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/ivImage"
+        android:src="@drawable/gumtree"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_weight="0.78" />
+
+    <Button
+        android:id="@+id/btn_go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:text="Go" />
+
+    <Button
+        android:id="@+id/btn_go2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:text="Go" />
+
+
+</FrameLayout>
+<!--
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
+
 
     <ImageView
-        android:layout_width="75dp"
+        android:layout_width="match_parent"
         android:layout_height="75dp"
         android:id="@+id/ivImage"
         android:src="@drawable/gumtree"
         android:scaleType="fitXY"
-        android:adjustViewBounds="true"/>
+        android:adjustViewBounds="true"
+        android:layout_weight="0.78" />
+
+
+    <com.etsy.android.grid.util.DynamicHeightImageView
+        android:id="@+id/ivImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -25,4 +80,7 @@
         android:layout_height="wrap_content"
         android:text="Price"
         android:id="@+id/tvPrice" />
+
+
 </LinearLayout>
+-->

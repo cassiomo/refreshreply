@@ -80,6 +80,8 @@ public class AdActivity extends Activity implements AdListListener{
                             public void onClick(DialogInterface dialog, int which) {
                                 // sale completed
                                 getImageDisplayFragment().categoryId = 2;
+                                getImageDisplayFragment().fetchAndShowData();
+
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -165,8 +167,6 @@ public class AdActivity extends Activity implements AdListListener{
 
     public static class ListAdPagerAdapter extends FragmentPagerAdapter {
 
-        //protected AdListFragment mAdListFragment;
-        //protected AdStaggeredGridFragment adStaggeredGridFragment;
         protected ImageDisplayFragment imageDisplayFragment;
         protected MessageFragment messageFragment;
 
@@ -174,8 +174,6 @@ public class AdActivity extends Activity implements AdListListener{
             super(fm);
             messageFragment = MessageFragment.newInstance();
             imageDisplayFragment = ImageDisplayFragment.newInstance();
-            //adStaggeredGridFragment = AdStaggeredGridFragment.newInstance();
-            //mAdListFragment = mAdListFragment.newInstance();
 
         }
 
@@ -188,8 +186,6 @@ public class AdActivity extends Activity implements AdListListener{
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    //return mAdListFragment;
-                    //return adStaggeredGridFragment;
                     return imageDisplayFragment;
                 case 1:
                     return messageFragment;

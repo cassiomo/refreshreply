@@ -178,10 +178,6 @@ public class MessageFragment extends Fragment {
         currentInterestedAd = ad;
     }
 
-    private void resetCardView() {
-        vpChatHint.setAdapter(getViewPagerAdapter());
-    }
-
     PagerAdapter getViewPagerAdapter() {
         return mMapPagerAdapter;
     }

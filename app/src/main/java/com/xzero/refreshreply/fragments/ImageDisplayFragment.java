@@ -37,6 +37,10 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
 
     @InjectView(R.id.gvResult)
     GridView gvResult;
+
+//    @InjectView(R.id.gvResult)
+//    StaggeredGridView gvResult;
+
     @InjectView(R.id.pbLoading)
     ProgressBar pbLoading;
 
@@ -124,65 +128,7 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
         }
     }
 
-//    private void fetchAdsInBackground(final ParseQuery<ParseObject> query) {
-//
-//        pbLoading.setVisibility(ProgressBar.INVISIBLE);
-//        Log.d("debug", "Using ads fetched from remote");
-//
-//        query.findInBackground(new FindCallback<ParseObject>() {
-//
-//        public void done(final List<ParseObject> ads, ParseException e) {
-//
-//            if (e == null) {
-//                mListener.onListRefreshederested();
-//
-//                Log.d("info", "Fetching ads from local DB. Found " + ads.size());
-//
-//                if (ads.size() == 0) {
-//                    fetchAdsFromRemote(ParseQuery.getQuery("Ad"));
-//                } else {
-//                    pbLoading.setVisibility(ProgressBar.INVISIBLE);
-//                    Log.d("debug", "Using ads fetched from local DB.");
-//                    addAdsToAdapter(ads);
-//                }
-//            } else {
-//                Log.d("error", "Exception while fetching ads: " + e);
-//                pbLoading.setVisibility(ProgressBar.INVISIBLE);
-//            }
-//        }
-//    });
-//    }
-
-//    private void unpinAndRepin(final List<ParseObject> ads) {
-//
-//        Log.d("debug", "Unpinning previously saved objects");
-//        ParseObject.unpinAllInBackground(AdPersister.ALL_ADS, ads,
-//                new DeleteCallback() {
-//                    public void done(ParseException e) {
-//                        if (e != null) {
-//                            // There was some error.
-//                            return;
-//                        } else {
-//                            Log.d("info", ads.size() + " previous cached ads deleted.");
-//                        }
-//                    }
-//                }
-//        );
-//        // Add the latest results for this query to the cache.
-//        Log.d("debug", "Pinning newly fetched ads " + ads.size());
-//        ParseObject.pinAllInBackground(AdPersister.ALL_ADS, ads, new SaveCallback() {
-//            @Override
-//            public void done(ParseException e) {
-//                if (e == null) {
-//                    Log.d("debug", "Pinned newly fetched ads " + ads.size());
-//                } else {
-//                    Log.d("debug", "Couldn't pin ads: " + e.toString());
-//                }
-//            }
-//        });
-//    }
-
-    private void fetchAdsFromRemote(ParseQuery<ParseObject> query) {
+    public void fetchAdsFromRemote(ParseQuery<ParseObject> query) {
 
         Log.d("debug", "Fetching ads from remote DB.");
 
@@ -232,7 +178,7 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
         }
     }
 
-    private void fetchAndShowData() {
+    public void fetchAndShowData() {
         prepareForDataFetch();
         fetchAdsFromRemote(ParseQuery.getQuery("Ad"));
     }
