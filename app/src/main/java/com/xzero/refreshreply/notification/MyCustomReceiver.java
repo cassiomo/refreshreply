@@ -15,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 
 public class MyCustomReceiver extends BroadcastReceiver {
@@ -35,9 +34,15 @@ public class MyCustomReceiver extends BroadcastReceiver {
                //Log.d(TAG, new Exception().getStackTrace()[0].getMethodName() + " " + c.getTime());
 
                Intent pupInt = new Intent(context, SignInActivity.class);
-               pupInt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
-               Date today = new Date();
-               pupInt.putExtra("alarm", today.toString());
+               //Intent pupInt = new Intent(context, AdActivity.class);
+               pupInt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+               String adId = intent.getStringExtra("adId");
+               String messageId = intent.getStringExtra("messageId");
+               String alarmTime = intent.getStringExtra("alarm");
+               pupInt.putExtra("adId", adId);
+               pupInt.putExtra("messageId", messageId);
+               pupInt.putExtra("alarm", alarmTime);
                context.getApplicationContext().startActivity(pupInt);
 
            } else {

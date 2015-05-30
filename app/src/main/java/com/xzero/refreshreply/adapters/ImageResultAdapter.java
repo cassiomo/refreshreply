@@ -1,11 +1,13 @@
 package com.xzero.refreshreply.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.xzero.refreshreply.R;
@@ -34,6 +36,10 @@ public class ImageResultAdapter extends ArrayAdapter<Ad>  {
     public static class ViewHolder {
         @InjectView(R.id.ivImage)
         ImageView imageView;
+        @InjectView(R.id.tvAdInfo)
+        TextView tvAdInfo;
+        @InjectView(R.id.tvAdSeller)
+        TextView tvAdSeller;
 
 //        @InjectView(R.id.ivImage)
 //        DynamicHeightImageView imageView;
@@ -72,8 +78,8 @@ public class ImageResultAdapter extends ArrayAdapter<Ad>  {
 
         viewHolder.imageView.setImageResource(0);
         //viewHolder.imageView.setHeightRatio(positionHeight);
-//        viewHolder.tvTitle.setText(Html.fromHtml(imageResult.getTitle()));
-//        viewHolder.tvPrice.setText(Html.fromHtml(imageResult.getPrice()));
+        viewHolder.tvAdInfo.setText(Html.fromHtml(imageResult.getTitle() + " " + imageResult.getPrice()));
+        viewHolder.tvAdSeller.setText(Html.fromHtml("Seller: " + imageResult.getOwnerName()));
         Picasso.with(getContext()).load(imageResult.getPhotoUrl()).into(viewHolder.imageView);
 
         return convertView;

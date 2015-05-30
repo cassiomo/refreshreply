@@ -2,9 +2,7 @@ package com.xzero.refreshreply;
 
 import android.animation.Animator;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -42,7 +40,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.squareup.picasso.Picasso;
 import com.xzero.refreshreply.helpers.GPSTracker;
 import com.xzero.refreshreply.models.Ad;
-import com.xzero.refreshreply.notification.MyCustomReceiver;
+import com.xzero.refreshreply.notification.LocalAlarmManager;
 import com.xzero.refreshreply.queries.MessageQuery;
 
 import java.text.DateFormat;
@@ -205,22 +203,11 @@ public class ExpandableMessageRowView extends RelativeLayout implements
     };
 
     private void updateLabel() {
+
+        // buyer
         etMessage.setText(fmtDateAndTime.format(dateAndTime.getTime()));
 
-        //etMessage.setText("date " + dateAndTime.getTime().toString());
-
-        AlarmManager alarm = (AlarmManager)(((Activity)mContext).getSystemService((Context.ALARM_SERVICE)));
-
-        Intent intent = new Intent(mContext, MyCustomReceiver.class);
-        intent.setAction(MyCustomReceiver.ACTION_ALARM_RECEIVER);
-
-        PendingIntent pintent = PendingIntent.getBroadcast(mContext, 1001, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        alarm.set(AlarmManager.RTC_WAKEUP, dateAndTime.getTimeInMillis(), pintent);
-
-        boolean isWorking = (PendingIntent.getBroadcast(mContext, 1001, intent, PendingIntent.FLAG_NO_CREATE) != null);//just changed the flag
-        Log.d(TAG, "alarm " + (isWorking ? "" : "not") + " working...");
-
+        LocalAlarmManager.setLocalAlarm(mContext,currentInterestedAd, dateAndTime.getTimeInMillis());
     }
 
     private void setupChatHintButton() {

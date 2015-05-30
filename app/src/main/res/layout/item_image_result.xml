@@ -26,19 +26,39 @@
         android:adjustViewBounds="true"
         android:layout_weight="0.78" />
 
-    <Button
-        android:id="@+id/btn_go"
+    <ImageButton
+        android:id="@+id/ibHeart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|right"
-        android:text="Go" />
+        android:background="@drawable/heart"/>
 
-    <Button
-        android:id="@+id/btn_go2"
+    <ImageButton
+        android:id="@+id/ibMail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:text="Go" />
+        android:background="@drawable/mail"/>
+
+    <TextView
+        android:id="@+id/tvAdInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|left"
+        android:text="New car $12"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textColor="@color/greenEnabled"/>
+
+    <TextView
+        android:id="@+id/tvAdSeller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:text="Seller: Alice"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textColor="@color/refreshReplyBlue"/>
 
 
 </FrameLayout>

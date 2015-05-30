@@ -2,11 +2,7 @@ package com.xzero.refreshreply.fragments;
 
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.Fragment;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -29,7 +25,7 @@ import com.xzero.refreshreply.adapters.ChatListAdapter;
 import com.xzero.refreshreply.adapters.ImageResultAdapter;
 import com.xzero.refreshreply.models.Ad;
 import com.xzero.refreshreply.models.Message;
-import com.xzero.refreshreply.notification.MyCustomReceiver;
+import com.xzero.refreshreply.notification.LocalAlarmManager;
 import com.xzero.refreshreply.queries.MessageQuery;
 
 import java.text.DateFormat;
@@ -53,7 +49,7 @@ public class MessageFragment extends Fragment {
     private static String sUserId;
 
     public static final String USER_ID_KEY = "userId";
-    private static final int MAX_CHAT_MESSAGES_TO_SHOW = 20;
+    private static final int MAX_CHAT_MESSAGES_TO_SHOW = 50;
 
     // Create a handler which can run code periodically
     private Handler handler = new Handler();
@@ -263,24 +259,11 @@ public class MessageFragment extends Fragment {
 
     private void setAlarm(String message) {
         try {
+            //seller
             DateFormat inputDateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm:ss", Locale.ENGLISH);
-            Date strToDate = inputDateFormat
-                    .parse(message);
+            Date strToDate = inputDateFormat.parse(message);
+            LocalAlarmManager.setLocalAlarm(getActivity(), currentInterestedAd, strToDate.getTime());
 
-            Intent intent = new Intent(getActivity(), MyCustomReceiver.class);
-            intent.setAction(MyCustomReceiver.ACTION_ALARM_RECEIVER);
-            intent.putExtra("adId", currentInterestedAd.getObjectId());
-            if (MessageQuery.mMessageId !=null) {
-                intent.putExtra("messageId", MessageQuery.mMessageId);
-            }
-
-            PendingIntent pintent = PendingIntent.getBroadcast(getActivity(), 1002, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-            AlarmManager alarm = (AlarmManager) (getActivity().getSystemService((Context.ALARM_SERVICE)));
-
-            alarm.set(AlarmManager.RTC_WAKEUP, strToDate.getTime(), pintent);
-
-            boolean isWorking = (PendingIntent.getBroadcast(getActivity(), 1002, intent, PendingIntent.FLAG_NO_CREATE) != null);//just changed the flag
-            Log.d(TAG, "alarm " + (isWorking ? "" : "not") + " working...");
         } catch (java.text.ParseException e) {
             e.printStackTrace();
         }

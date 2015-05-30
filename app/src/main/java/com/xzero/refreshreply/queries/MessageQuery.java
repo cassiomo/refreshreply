@@ -23,7 +23,9 @@ public class MessageQuery {
     public static void saveMessageInBackground(final String body, final Ad ad) {
         final Message message = new Message();
         String sUserId = ParseUser.getCurrentUser().getObjectId();
+        String sUserName = ParseUser.getCurrentUser().getUsername();
         message.setUserId(sUserId);
+        message.setUserName(sUserName);
         message.setBody(body);
         message.saveInBackground(new SaveCallback() {
             @Override

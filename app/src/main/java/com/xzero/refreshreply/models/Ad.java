@@ -100,6 +100,14 @@ public class Ad extends ParseObject implements Serializable {
 
     public String getName() {return getString("name"); }
 
+    public String getOwnerName() {
+        return getString("ownerName");
+    }
+
+    public void setOwnerName(String ownerName) {
+        put("ownerName", ownerName);
+    }
+
     public boolean isOnSale() {
         return getCurrentStatus().equalsIgnoreCase("Sale");
     }

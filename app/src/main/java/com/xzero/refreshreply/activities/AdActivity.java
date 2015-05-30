@@ -99,7 +99,7 @@ public class AdActivity extends Activity implements AdListListener{
                                                 msg = (Message)messages.get(0);
                                             }
                                             if (msg !=null && finalAd !=null) {
-                                                waitUpAlarm(msg, finalAd);
+                                                wakeupAlarm(msg, finalAd);
                                             }
 
                                         } else {
@@ -113,29 +113,11 @@ public class AdActivity extends Activity implements AdListListener{
                         }
                     });
                 }
-//                new AlertDialog.Builder(this)
-//                        .setTitle("Meetup Confirmation")
-//                        .setMessage("Did you meet with?")
-//                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                // sale completed
-//                                getImageDisplayFragment().categoryId = 2;
-//                                getImageDisplayFragment().fetchAndShowData();
-//
-//                            }
-//                        })
-//                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                // sale not completed
-//                            }
-//                        })
-//                        .setIcon(android.R.drawable.ic_dialog_alert)
-//                        .show();
             }
         }
     }
 
-    private void waitUpAlarm(final Message msg, final Ad ad) {
+    private void wakeupAlarm(final Message msg, final Ad ad) {
         new AlertDialog.Builder(this)
                 .setTitle(ad.getTitle() + " Meetup")
                 .setMessage("Did you meet with " + msg.getUserName() + "?")

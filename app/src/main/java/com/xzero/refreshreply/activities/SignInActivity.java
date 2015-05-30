@@ -22,7 +22,6 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.xzero.refreshreply.R;
 import com.xzero.refreshreply.helpers.NetworkUtil;
-import com.xzero.refreshreply.models.Ad;
 import com.xzero.refreshreply.notification.MyCustomReceiver;
 
 import butterknife.ButterKnife;
@@ -39,13 +38,10 @@ public class SignInActivity extends ActionBarActivity {
     private String username;
     private String password;
 
-//    private boolean isFromPush;
-
     private String alarmTime;
 
-    private Ad ad;
-
     private String mAdId;
+    private String mMessageId;
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
@@ -71,10 +67,11 @@ public class SignInActivity extends ActionBarActivity {
         ButterKnife.inject(this);
 
         Intent receviedIntent = getIntent();
+        String adId = receviedIntent.getStringExtra("adId");
         Bundle extras = receviedIntent.getExtras();
         if (extras != null){
             mAdId = extras.getString("adId");
-//            isFromPush = extras.getBoolean("isFromPush");
+            mMessageId = extras.getString("messageId");
             alarmTime = extras.getString("alarm");
         }
 
@@ -103,8 +100,8 @@ public class SignInActivity extends ActionBarActivity {
         if (currentUser != null) {
             Log.d("debug", "Current user is " + currentUser.toString());
             Intent intent = new Intent(getApplicationContext(), AdActivity.class);
-//            intent.putExtra("isFromPush", isFromPush);
             intent.putExtra("adId", mAdId);
+            intent.putExtra("messageId", mMessageId);
             intent.putExtra("alarm", alarmTime);
             startActivity(intent);
         } else {
