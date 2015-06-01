@@ -10,6 +10,10 @@ import com.xzero.refreshreply.activities.SignInActivity;
 import com.xzero.refreshreply.models.Ad;
 import com.xzero.refreshreply.models.Message;
 
+
+//June needs to be a buyer
+//Johne needs to be a seller.
+
 public class ParseApplication extends Application {
 
 	@Override
@@ -67,9 +71,11 @@ public class ParseApplication extends Application {
 //            if (odd == 1) {
 //                ad.setOwnerId("fINhuLpnZw");
 //                ad.setTitle("New car");
+//                ad.setOwnerName("john");
 //                ad.setPhotoUrl("http://thewowstyle.com/wp-content/uploads/2015/04/car-03.jpg");
 //            } else {
 //                ad.setTitle("Old car");
+//                ad.setOwnerName("june");
 //                ad.setOwnerId("Hh0IG6erg6");
 //                ad.setPhotoUrl("http://wallpapers111.com/wp-content/uploads/2015/03/Old-Cars-Wallpaper-660x330.jpg");
 //            }
@@ -87,11 +93,13 @@ public class ParseApplication extends Application {
 //            int odd = i % 2;
 //            if (odd == 1) {
 //                ad.setOwnerId("fINhuLpnZw");
+//                ad.setOwnerName("john");
 //                ad.setTitle("New Car Mug");
 //                ad.setPhotoUrl("http://static.artfire.com/uploads/product/0/50/39050/3339050/3339050/large/blue_classic_car_mini_cooper_mug_art_decorative_gifts_collectible_0003_1989b1a8.jpg");
 //            } else {
 //                ad.setTitle("Old Car Mug");
 //                ad.setOwnerId("Hh0IG6erg6");
+//                ad.setOwnerName("june");
 //                ad.setPhotoUrl("http://static.artfire.com/uploads/product/6/6/39006/3339006/3339006/large/red_classic_volk_beagle_mini_car_ceramic_mug_handmade_gifts_0002_7ac45798.jpg");
 //            }
 //            ad.saveInBackground();
@@ -100,7 +108,7 @@ public class ParseApplication extends Application {
 
 /*
         ParseUser user2 = new ParseUser();
-        user2.setUsername("alice");
+        user2.setUsername("june");
         user2.setPassword("123123");
         ParseGeoPoint point2 = new ParseGeoPoint(
                 37.385383, -122.020552

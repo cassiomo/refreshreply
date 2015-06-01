@@ -19,7 +19,7 @@ public class LocalAlarmManager {
 
     private static final String TAG = "LocalAlarmManager";
 
-    public static void setLocalAlarm(Context mContext, Ad currentInterestedAd, long timeInMillis) {
+    public static void setLocalAlarm(Context mContext, Ad currentInterestedAd, long timeInMillis, int requestCode) {
 
         Calendar dateAndTime = Calendar.getInstance();
 
@@ -34,11 +34,11 @@ public class LocalAlarmManager {
         }
         intent.putExtra("alarm", String.valueOf(timeInMillis));
 
-        PendingIntent pintent = PendingIntent.getBroadcast(mContext, 1001, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pintent = PendingIntent.getBroadcast(mContext, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         alarm.set(AlarmManager.RTC_WAKEUP, timeInMillis, pintent);
 
-        boolean isWorking = (PendingIntent.getBroadcast(mContext, 1001, intent, PendingIntent.FLAG_NO_CREATE) != null);//just changed the flag
+        boolean isWorking = (PendingIntent.getBroadcast(mContext, requestCode, intent, PendingIntent.FLAG_NO_CREATE) != null);//just changed the flag
         Log.d(TAG, "alarm " + (isWorking ? "" : "not") + " working...");
     }
 }

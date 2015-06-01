@@ -58,13 +58,13 @@
             android:fontFamily="sans-serif-light"
             android:clickable="true"
             android:textSize="16dp"
-            android:text="10 km away" />
+            android:text="10 miles away" />
 
         <TextView
             android:id="@+id/tvAdTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/darkGrayTextV2"
+            android:textColor="@color/greenEnabled"
             android:textSize="20dp"
             android:fontFamily="sans-serif-light"
             android:text="Some Title"
@@ -77,16 +77,29 @@
             android:id="@+id/tvAdPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/refreshReplyBlue"
+            android:fontFamily="sans-serif-light"
+            android:text="$20"
+            android:layout_toRightOf="@id/tvAdTitle" />
+
+        <Button
+            android:id="@+id/btSuggested"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textSize="12dp"
             android:layout_marginLeft="8dp"
             android:textColor="@color/textGray"
             android:fontFamily="sans-serif-light"
-            android:text="$20"
+            android:text="Suggested: $20"
             android:layout_alignBottom="@id/adStatusContainer"
-            android:layout_alignLeft="@id/tvAdTitle" />
+            android:layout_alignLeft="@id/tvAdTitle"
+            android:layout_below="@+id/tvAdTitle" /> />
 
 
         <!-- chat -->
+
         <RelativeLayout
             android:id="@+id/llSend"
             android:layout_width="match_parent"
@@ -123,10 +136,14 @@
 
         <!-- detail container -->
         <RelativeLayout
+            android:orientation="vertical"
             android:id="@+id/vgDetailsContainer"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_below="@id/llSend">
+            android:layout_below="@id/llSend"
+            android:weightSum="1">
+
+
 <!--
             <fragment
                 android:name="com.google.android.gms.maps.MapFragment"
@@ -135,6 +152,46 @@
                 android:layout_height="match_parent">
             </fragment>
 -->
+
+            <TextView
+                android:layout_width="36dp"
+                android:layout_height="42dp"
+                android:text="address/time"
+                android:id="@+id/tvRemember1"
+                android:layout_weight="0.21"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/ivAd1" />
+
+            <ImageView
+                android:id="@+id/ivAd1"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/gumtree"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_above="@+id/tvRemember2"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="36dp"
+                android:layout_height="42dp"
+                android:layout_below="@id/tvRemember1"
+                android:text="address/time"
+                android:id="@+id/tvRemember2"
+                android:layout_alignParentStart="true"
+                android:layout_alignEnd="@+id/tvRemember1" />
+
+            <ImageView
+                android:id="@+id/ivAd2"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/gumtree"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_alignBottom="@+id/tvRemember2"
+                android:layout_toEndOf="@+id/tvRemember2" />
 
         </RelativeLayout>
 
@@ -198,6 +255,7 @@
             android:scaleType="fitXY"
             android:src="@drawable/ic_star_blue_list"/>
 
+        <!--
         <ImageButton
             android:id="@+id/ibChatInfo"
             android:visibility="gone"
@@ -209,6 +267,7 @@
             android:stateListAnimator="@anim/button_animator"
             android:scaleType="fitXY"
             android:src="@drawable/ic_addreport64"/>
+        -->
 
     </RelativeLayout>
 

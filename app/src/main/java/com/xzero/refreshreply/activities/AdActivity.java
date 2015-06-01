@@ -21,12 +21,12 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.xzero.refreshreply.Constant;
 import com.xzero.refreshreply.R;
 import com.xzero.refreshreply.fragments.ImageDisplayFragment;
 import com.xzero.refreshreply.fragments.MessageFragment;
 import com.xzero.refreshreply.listeners.AdListListener;
 import com.xzero.refreshreply.models.Ad;
-import com.xzero.refreshreply.models.Message;
 
 import java.util.List;
 import java.util.UUID;
@@ -52,8 +52,6 @@ public class AdActivity extends Activity implements AdListListener{
 
     private Ad mAd;
 
-    public int PLACE_PICKER_REQUEST = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,64 +71,34 @@ public class AdActivity extends Activity implements AdListListener{
             alarmTime = receviedIntent.getExtras().getString("alarm");
 
             if (alarmTime !=null) {
-
-                if (mAdId != null && mMessageId !=null) {
-                    ParseQuery query = ParseQuery.getQuery("Ad");
-                    query.whereEqualTo("objectId", mAdId);
-                    query.findInBackground(new FindCallback<ParseObject>() {
-
-                        public void done(final List<ParseObject> ads, ParseException e) {
-
-                            if (e == null) {
-                                Ad ad = null;
-                                if (ads.size() > 0) {
-                                    ad = (Ad) ads.get(0);
-                                }
-                                ParseQuery query = ParseQuery.getQuery("Message");
-                                query.whereEqualTo("objectId", mMessageId);
-                                final Ad finalAd = ad;
-                                query.findInBackground(new FindCallback<ParseObject>() {
-
-                                    public void done(final List<ParseObject> messages, ParseException e) {
-
-                                        if (e == null) {
-                                            Message msg = null;
-                                            if (messages.size() > 0) {
-                                                msg = (Message)messages.get(0);
-                                            }
-                                            if (msg !=null && finalAd !=null) {
-                                                wakeupAlarm(msg, finalAd);
-                                            }
-
-                                        } else {
-                                            Log.d("error", "Exception while fetching remote ads: " + e);
-                                        }
-                                    }
-                                });
-                            } else {
-                                Log.d("error", "Exception while fetching remote ads: " + e);
-                            }
-                        }
-                    });
-                }
+                wakeupAlarm();
             }
         }
     }
 
-    private void wakeupAlarm(final Message msg, final Ad ad) {
+    private void wakeupAlarm() {
+
+        final ParseUser currentUser = ParseUser.getCurrentUser();
+        String otherPerson;
+        //hardcode username
+        if (currentUser.getUsername().equals("june")) {
+            otherPerson = "john";
+        } else {
+            otherPerson = "june";
+        }
+
         new AlertDialog.Builder(this)
-                .setTitle(ad.getTitle() + " Meetup")
-                .setMessage("Did you meet with " + msg.getUserName() + "?")
+                .setIcon(R.drawable.taptapchat)
+                .setTitle(" Meetup with New Car")
+                .setMessage("Did you meet with " + otherPerson + "?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // sale completed
-                        final ParseUser currentUser = ParseUser.getCurrentUser();
-                        if (msg.getUserId() == currentUser.getObjectId()) {
-                            // buyer
+                        if (currentUser.getUsername().equals("june")) {
                             getImageDisplayFragment().categoryId = 2;
                             getImageDisplayFragment().fetchAndShowData();
+                            wakupThankyou();
                         } else {
-                            // seller
                             wakeUpCoupon();
                         }
                     }
@@ -144,11 +112,26 @@ public class AdActivity extends Activity implements AdListListener{
                 .show();
     }
 
+    private void wakupThankyou() {
+        new AlertDialog.Builder(this)
+                .setIcon(R.drawable.taptapchat)
+                .setTitle("Thank you for shopping!")
+                .setMessage("Have a nice day!")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        switchToAdView();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
     private void wakeUpCoupon() {
 
         String uniqueString = UUID.randomUUID().toString();
 
         new AlertDialog.Builder(this)
+                .setIcon(R.drawable.taptapchat)
                 .setTitle("Thank you - Post Ad Coupon")
                 .setMessage(uniqueString)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -231,6 +214,10 @@ public class AdActivity extends Activity implements AdListListener{
         mPager.setCurrentItem(1, true);
     }
 
+    public void switchToAdView() {
+        mPager.setCurrentItem(0, true);
+    }
+
     public static class ListAdPagerAdapter extends FragmentPagerAdapter {
 
         protected ImageDisplayFragment imageDisplayFragment;
@@ -263,7 +250,8 @@ public class AdActivity extends Activity implements AdListListener{
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "AD";
+                    final ParseUser currentUser = ParseUser.getCurrentUser();
+                    return "AD login:" + currentUser.getUsername();
                 case 1:
                     return "MESSAGE";
             }
@@ -275,7 +263,7 @@ public class AdActivity extends Activity implements AdListListener{
     protected void onActivityResult(int requestCode,
                                     int resultCode, Intent data) {
 
-        if (requestCode == PLACE_PICKER_REQUEST) {
+        if (requestCode == Constant.PLACE_PICKER_REQUEST  && data !=null) {
 
             final Place place = PlacePicker.getPlace(data, this);
             final CharSequence name = place.getName();

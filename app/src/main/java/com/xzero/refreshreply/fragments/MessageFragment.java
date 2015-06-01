@@ -18,6 +18,7 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.xzero.refreshreply.Constant;
 import com.xzero.refreshreply.ExpandableMessageRowView;
 import com.xzero.refreshreply.R;
 import com.xzero.refreshreply.activities.AdActivity;
@@ -207,7 +208,14 @@ public class MessageFragment extends Fragment {
                 setConditionAndBlink(messages.get(messages.size() - 1).getBody());
             } else {
                 Log.d("FromMe", "FromMe");
+                setOtherUserSellingAd(messages.get(messages.size() - 1).getBody());
             }
+        }
+    }
+
+    private void setOtherUserSellingAd(String message) {
+        if (message.contains("what")) {
+            adRow.mCondition = 2;
         }
     }
 
@@ -245,8 +253,10 @@ public class MessageFragment extends Fragment {
                 adRow.mCondition = 0;
             } else if (message.contains("when")) {
                 adRow.mCondition = 1;
-            } else if (message.contains("anything")) {
+            } else if (message.contains("what")) {
                 adRow.mCondition = 2;
+            } else if (message.contains("$")) {
+                adRow.mCondition = 3;
             } else if (message.contains("2015")) {
                 if (!AdActivity.isAlarmSet) {
                     setAlarm(message);
@@ -262,7 +272,8 @@ public class MessageFragment extends Fragment {
             //seller
             DateFormat inputDateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm:ss", Locale.ENGLISH);
             Date strToDate = inputDateFormat.parse(message);
-            LocalAlarmManager.setLocalAlarm(getActivity(), currentInterestedAd, strToDate.getTime());
+            LocalAlarmManager.setLocalAlarm(getActivity(),
+                    currentInterestedAd, strToDate.getTime(), Constant.RECEIVER_REQUEST_CODE);
 
         } catch (java.text.ParseException e) {
             e.printStackTrace();

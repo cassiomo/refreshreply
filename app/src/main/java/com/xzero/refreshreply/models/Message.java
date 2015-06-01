@@ -47,3 +47,61 @@ public class Message extends ParseObject {
         put("body", body);
     }
 }
+
+//package com.xzero.refreshreply.models;
+//
+//import com.parse.ParseClassName;
+//import com.parse.ParseObject;
+//
+//
+//@ParseClassName("Message")
+//public class Message extends ParseObject {
+//
+//    public void setSenderName(String senderName) {
+//        put("senderName", senderName);
+//    }
+//
+//    public String getSenderName() {
+//        return getString("senderName");
+//    }
+//
+//    public void setSenderId(String senderId) {
+//        put("senderId", senderId);
+//    }
+//
+//    public String getSenderId() {
+//        return getString("senderId");
+//    }
+//
+//    public void setReceiverName(String receiverName) {
+//        put("receiverName", receiverName);
+//    }
+//
+//    public String getReceiverName() {
+//        return getString("receiverName");
+//    }
+//
+//    public void setReceiverId(String receiverId) {
+//        put("receiverId", receiverId);
+//    }
+//
+//    public String getReceiverId() {
+//        return getString("receiverId");
+//    }
+//
+//    public void setMessageDirection(String messageDirection) {
+//        put("messageDirection", messageDirection);
+//    }
+//
+//    public String getMessageDirection() {
+//        return getString("messageDirection");
+//    }
+//
+//    public String getBody() {
+//        return getString("body");
+//    }
+//
+//    public void setBody(String body) {
+//        put("body", body);
+//    }
+//}
