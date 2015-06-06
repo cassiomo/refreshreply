@@ -59,6 +59,120 @@ public class ParseApplication extends Application {
         });
         */
 
+
+//                Ad ad = new Ad();
+//        ad.setCurrentStatus("Sale");
+//        ad.setPrice("$100");
+//        ad.setCategoryId("2");
+//        ad.setAddress("1" + "2000  Blacow Rd Fremont, CA");
+//        ad.setDescription("car for sell ");
+//        ad.setLocation(new ParseGeoPoint(37.5059315, -121.9469625 ));
+//        ad.setOwnerId("fINhuLpnZw");
+//        ad.setTitle("New car");
+//        ad.setOwnerName("john");
+//        ad.setPhotoUrl("http://www.china-caraccessories.com/china-car-mat/rubber-car-mat-2303.jpg");
+//        ad.saveInBackground();
+//
+//        ad = new Ad();
+//        ad.setCurrentStatus("Sale");
+//        ad.setPrice("$28");
+//        ad.setCategoryId("2");
+//        ad.setAddress("1" + "2000  Blacow Rd Fremont, CA");
+//        ad.setDescription("car for sell ");
+//        ad.setLocation(new ParseGeoPoint(37.5059315, -121.9469625 ));
+//        ad.setOwnerId("fINhuLpnZw");
+//        ad.setTitle("New car");
+//        ad.setOwnerName("john");
+//        ad.setPhotoUrl("hhttp://www.theonecar.com/wp-content/uploads/2014/03/accessories-for-cars-74.jpg");
+//        ad.saveInBackground();
+//
+//
+//        ad = new Ad();
+//        ad.setCurrentStatus("Sale");
+//        ad.setPrice("$21");
+//        ad.setCategoryId("2");
+//        ad.setAddress("1" + "2000  Blacow Rd Fremont, CA");
+//        ad.setDescription("car for sell ");
+//        ad.setLocation(new ParseGeoPoint(37.5059315, -121.9469625 ));
+//        ad.setOwnerId("fINhuLpnZw");
+//        ad.setTitle("New car");
+//        ad.setOwnerName("john");
+//        ad.setPhotoUrl("https://ukcaraccessories.files.wordpress.com/2014/01/car-accessories-seat-covers.jpg");
+//        ad.saveInBackground();
+//
+//        ad = new Ad();
+//        ad.setCurrentStatus("Sale");
+//        ad.setPrice("$6");
+//        ad.setCategoryId("2");
+//        ad.setAddress("1" + "2000  Blacow Rd Fremont, CA");
+//        ad.setDescription("car for sell ");
+//        ad.setLocation(new ParseGeoPoint(37.5059315, -121.9469625 ));
+//        ad.setOwnerId("fINhuLpnZw");
+//        ad.setTitle("New car");
+//        ad.setOwnerName("john");
+//        ad.setPhotoUrl("        http://img02.taobaocdn.com/bao/uploaded/i2/14910020468838172/T1dC4EXtlXXXXXXXXX_!!0-item_pic.jpg");
+//        ad.saveInBackground();
+
+
+
+//        Ad ad = new Ad();
+//        ad.setCurrentStatus("Sale");
+//        ad.setPrice("$100");
+//        ad.setCategoryId("1");
+//        ad.setAddress("1" + "2000  Blacow Rd Fremont, CA");
+//        ad.setDescription("car for sell ");
+//        ad.setLocation(new ParseGeoPoint(37.5059315, -121.9469625 ));
+//        ad.setOwnerId("fINhuLpnZw");
+//        ad.setTitle("New car");
+//        ad.setOwnerName("john");
+//        ad.setPhotoUrl("http://www.affordablesportsandimports.net/post/dealerimagefiles/custom/117001/ss/2.jpg");
+//        ad.saveInBackground();
+//
+//        ad = new Ad();
+//        ad.setCurrentStatus("Sale");
+//        ad.setPrice("$1");
+//        ad.setCategoryId("1");
+//        ad.setAddress("1" + "2000  Blacow Rd Fremont, CA");
+//        ad.setDescription("car for sell ");
+//        ad.setLocation(new ParseGeoPoint(37.5059315, -121.9469625 ));
+//        ad.setOwnerId("fINhuLpnZw");
+//        ad.setTitle("New car");
+//        ad.setOwnerName("john");
+//        ad.setPhotoUrl("http://media.caranddriver.com/images/media/638444/porsche-cayman-photo-640546-s-original.jpg");
+//        ad.saveInBackground();
+//
+//        ad = new Ad();
+//        ad.setCurrentStatus("Sale");
+//        ad.setPrice("$50");
+//        ad.setCategoryId("1");
+//        ad.setAddress("1" + "2000  Blacow Rd Fremont, CA");
+//        ad.setDescription("car for sell ");
+//        ad.setLocation(new ParseGeoPoint(37.5059315, -121.9469625 ));
+//        ad.setOwnerId("fINhuLpnZw");
+//        ad.setTitle("New car");
+//        ad.setOwnerName("john");
+//        ad.setPhotoUrl("http://vignette2.wikia.nocookie.net/pixar/images/b/bd/Cat_tuners_car.png/revision/latest?cb=20121228220524");
+//        ad.saveInBackground();
+//
+//        ad = new Ad();
+//        ad.setCurrentStatus("Sale");
+//        ad.setPrice("$35");
+//        ad.setCategoryId("1");
+//        ad.setAddress("1" + "2000  Blacow Rd Fremont, CA");
+//        ad.setDescription("car for sell ");
+//        ad.setLocation(new ParseGeoPoint(37.5059315, -121.9469625 ));
+//        ad.setOwnerId("fINhuLpnZw");
+//        ad.setTitle("New car");
+//        ad.setOwnerName("john");
+//        ad.setPhotoUrl("http://www.fancyicons.com/free-icons/145/racing-cars/png/256/sport_car_256.png");
+//        ad.saveInBackground();
+
+        //http://www.affordablesportsandimports.net/post/dealerimagefiles/custom/117001/ss/2.jpg
+        //http://media.caranddriver.com/images/media/638444/porsche-cayman-photo-640546-s-original.jpg
+        //http://vignette2.wikia.nocookie.net/pixar/images/b/bd/Cat_tuners_car.png/revision/latest?cb=20121228220524
+        //http://www.fancyicons.com/free-icons/145/racing-cars/png/256/sport_car_256.png
+
+
 //        for (int i = 1 ; i < 3; i++) {
 //            Ad ad = new Ad();
 //            ad.setCurrentStatus("Sale");
@@ -72,7 +186,7 @@ public class ParseApplication extends Application {
 //                ad.setOwnerId("fINhuLpnZw");
 //                ad.setTitle("New car");
 //                ad.setOwnerName("john");
-//                ad.setPhotoUrl("http://thewowstyle.com/wp-content/uploads/2015/04/car-03.jpg");
+//                ad.setPhotoUrl("http://3.bp.blogspot.com/-Y6k2hQsaIfY/Thv2bJPhbwI/AAAAAAAAAXw/YeGjaN-2GEM/s400/xasc.png");
 //            } else {
 //                ad.setTitle("Old car");
 //                ad.setOwnerName("june");

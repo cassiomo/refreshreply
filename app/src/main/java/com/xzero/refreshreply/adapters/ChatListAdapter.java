@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.xzero.refreshreply.R;
+import com.xzero.refreshreply.helpers.RoundTransform;
 import com.xzero.refreshreply.models.Message;
 
 import java.math.BigInteger;
@@ -54,9 +55,24 @@ public class ChatListAdapter extends ArrayAdapter<Message> {
             holder.body.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
         }
         final ImageView profileView = isMe ? holder.imageRight : holder.imageLeft;
-        Picasso.with(getContext()).load(getProfileUrl(message.getUserId())).into(profileView);
+//        Picasso.with(getContext()).load(getProfileUrl(message.getUserId())).into(profileView);
+        Picasso.with(getContext()).load(getProfilePic(message.getUserName()))
+                .error(R.drawable.taptapchat)
+                .transform(new RoundTransform())
+                .into(profileView);
         holder.body.setText(message.getBody());
         return convertView;
+    }
+
+    // Create a gravatar image based on the hash value obtained from userId
+    public static String getProfilePic(final String userName) {
+        if (userName.equals("june")) {
+            return "http://www.salon124.com/wp-content/uploads/2013/07/keira-knightley-hairstyles.jpg";
+        } else if (userName.equals("john")) {
+            return "http://s.plurielles.fr/mmdia/i/83/9/brad-pitt-aujourd-hui-10779839fbwvd.jpg";
+        } else {
+            return getProfileUrl(userName);
+        }
     }
 
     // Create a gravatar image based on the hash value obtained from userId

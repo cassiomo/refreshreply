@@ -77,13 +77,13 @@ public class MessageFragment extends Fragment {
             if (currentInterestedAd == null) {
                 currentInterestedAd = new Ad();
                 currentInterestedAd.setCurrentStatus("Sale");
-                currentInterestedAd.setPrice("$10");
+                currentInterestedAd.setPrice("$60");
                 currentInterestedAd.setAddress("123123 Blacow Rd Fremont, CA");
                 currentInterestedAd.setDescription("car for sell ");
                 currentInterestedAd.setLocation(new ParseGeoPoint(37.50593151, -121.94696251));
                 currentInterestedAd.setOwnerId("fINhuLpnZw");
                 currentInterestedAd.setTitle("New car");
-                currentInterestedAd.setPhotoUrl("http://thewowstyle.com/wp-content/uploads/2015/04/car-03.jpg");
+                currentInterestedAd.setPhotoUrl("http://3.bp.blogspot.com/-Y6k2hQsaIfY/Thv2bJPhbwI/AAAAAAAAAXw/YeGjaN-2GEM/s400/xasc.png");
             }
 
             adRow = new ExpandableMessageRowView(getActivity(), null);

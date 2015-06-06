@@ -19,10 +19,11 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="match_parent"
         android:id="@+id/ivImage"
-        android:src="@drawable/gumtree"
-        android:scaleType="fitXY"
+        android:src="@drawable/taptapchat"
+        android:scaleType="fitCenter"
+        android:background="@drawable/border"
         android:adjustViewBounds="true"
         android:layout_weight="0.78" />
 
@@ -75,7 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:id="@+id/ivImage"
-        android:src="@drawable/gumtree"
+        android:src="@drawable/taptapchat"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
         android:layout_weight="0.78" />

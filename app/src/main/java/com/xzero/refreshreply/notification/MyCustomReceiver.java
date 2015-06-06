@@ -88,7 +88,7 @@ public class MyCustomReceiver extends BroadcastReceiver {
    // Create a local dashboard notification to tell user about the event
    private void createNotification(Context context) {
        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context).setSmallIcon(
-               R.drawable.gumtree).setContentTitle("Successfully logged in");
+               R.drawable.taptapchat).setContentTitle("Successfully logged in");
        NotificationManager mNotificationManager = (NotificationManager) context
           		.getSystemService(Context.NOTIFICATION_SERVICE);
        mNotificationManager.notify(45, mBuilder.build());

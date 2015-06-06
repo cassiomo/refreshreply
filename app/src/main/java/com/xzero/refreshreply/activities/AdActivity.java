@@ -11,9 +11,11 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.astuetz.PagerSlidingTabStrip.IconTabProvider;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.parse.FindCallback;
@@ -21,10 +23,13 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
 import com.xzero.refreshreply.Constant;
 import com.xzero.refreshreply.R;
+import com.xzero.refreshreply.adapters.ChatListAdapter;
 import com.xzero.refreshreply.fragments.ImageDisplayFragment;
 import com.xzero.refreshreply.fragments.MessageFragment;
+import com.xzero.refreshreply.helpers.RoundTransform;
 import com.xzero.refreshreply.listeners.AdListListener;
 import com.xzero.refreshreply.models.Ad;
 
@@ -42,6 +47,9 @@ public class AdActivity extends Activity implements AdListListener{
     @InjectView(R.id.slidingTabs)
     PagerSlidingTabStrip mTabs;
 
+    @InjectView(R.id.ibProfile)
+    ImageView ibProfile;
+
     private ListAdPagerAdapter mListAdPagerAdapter;
 
     private String mAdId;
@@ -58,6 +66,7 @@ public class AdActivity extends Activity implements AdListListener{
         setContentView(R.layout.activity_ads);
 
         ButterKnife.inject(this);
+
         FragmentManager fragmentManager = getFragmentManager();
 
         mListAdPagerAdapter = new ListAdPagerAdapter(fragmentManager);
@@ -74,6 +83,15 @@ public class AdActivity extends Activity implements AdListListener{
                 wakeupAlarm();
             }
         }
+
+        final ParseUser currentUser = ParseUser.getCurrentUser();
+        String profileUrl = ChatListAdapter.getProfilePic(currentUser.getUsername());
+
+        Picasso.with(getApplicationContext()).load(profileUrl)
+                .error(R.drawable.taptapchat)
+                .transform(new RoundTransform())
+                .into(ibProfile);
+
     }
 
     private void wakeupAlarm() {
@@ -96,6 +114,7 @@ public class AdActivity extends Activity implements AdListListener{
                         // sale completed
                         if (currentUser.getUsername().equals("june")) {
                             getImageDisplayFragment().categoryId = 2;
+                            //getImageDisplayFragment().buyerPrice = "50";
                             getImageDisplayFragment().fetchAndShowData();
                             wakupThankyou();
                         } else {
@@ -218,10 +237,12 @@ public class AdActivity extends Activity implements AdListListener{
         mPager.setCurrentItem(0, true);
     }
 
-    public static class ListAdPagerAdapter extends FragmentPagerAdapter {
+    public static class ListAdPagerAdapter extends FragmentPagerAdapter implements IconTabProvider  {
 
         protected ImageDisplayFragment imageDisplayFragment;
         protected MessageFragment messageFragment;
+        private int tabIcons[] = {R.drawable.homeblue, R.drawable.conversation};
+
 
         public ListAdPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -250,12 +271,16 @@ public class AdActivity extends Activity implements AdListListener{
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    final ParseUser currentUser = ParseUser.getCurrentUser();
-                    return "AD login:" + currentUser.getUsername();
+                    return "Home";
                 case 1:
-                    return "MESSAGE";
+                    return "Conversation";
             }
             return super.getPageTitle(position);
+        }
+
+        @Override
+        public int getPageIconResId(int position) {
+            return tabIcons[position];
         }
     }
 

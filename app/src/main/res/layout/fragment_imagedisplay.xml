@@ -59,7 +59,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
-            android:numColumns="2"/>
+            android:numColumns="1"/>
 
 <!--
         <com.etsy.android.grid.StaggeredGridView

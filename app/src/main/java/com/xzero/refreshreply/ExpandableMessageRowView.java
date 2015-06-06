@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Html;
@@ -124,6 +125,20 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
         btSuggestedPrice = (Button) findViewById(R.id.btSuggested);
         btSuggestedPrice.setVisibility(INVISIBLE);
+        btSuggestedPrice.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                String suggestedPrice = btSuggestedPrice.getText().toString();
+                if (suggestedPrice !=null && suggestedPrice.length() > 0) {
+
+                    etMessage.setText(suggestedPrice);
+
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
+                }
+            }
+        });
 
         viewHolder = new ViewHolder();
         mContext = context;
@@ -266,13 +281,18 @@ public class ExpandableMessageRowView extends RelativeLayout implements
                 int Low = 10;
                 int High = 100;
                 int suggested = random.nextInt(High-Low) + Low;
+                if (suggested < 50) {
+                    btSuggestedPrice.setTextColor(Color.RED);
+                } else {
+                    btSuggestedPrice.setTextColor(Color.GREEN);
+                }
                 btSuggestedPrice.setText("$" + suggested);
                 break;
             // 4: set the local notifcation time
             case 4:
 
             default:
-                btSuggestedPrice.setVisibility(INVISIBLE);
+ //               btSuggestedPrice.setVisibility(INVISIBLE);
  //                Intent i = new Intent(mContext, MapActivity.class);
 //                mContext.startActivity(i);
 
@@ -332,7 +352,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
                     String sUserName = ParseUser.getCurrentUser().getUsername();
                     if (sUserName.equals("june")) {
-                        mtvRemember1.setText("New Car $10");
+                        mtvRemember1.setText("New Car $60");
                         mtvRemember2.setText("New Car mug $10");
                         Picasso.with(getContext()).load(Constant.newCarUrl).into(mIvAd1);
                         Picasso.with(getContext()).load(Constant.newMugUrl).into(mIvAd2);
@@ -388,7 +408,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
         viewHolder.ivAdImage.setImageResource(0);
         Picasso.with(getContext()).load(currentInterestedAd.getPhotoUrl()).into(viewHolder.ivAdImage);
         viewHolder.tvAdLocation.setText(Html.fromHtml(currentInterestedAd.getTitle()));
-        mtvPriceLabel.setText(currentInterestedAd.getPrice());
+        mtvPriceLabel.setText("$" + currentInterestedAd.getPrice());
 
     }
 

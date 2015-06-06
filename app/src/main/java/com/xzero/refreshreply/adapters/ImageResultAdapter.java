@@ -78,7 +78,7 @@ public class ImageResultAdapter extends ArrayAdapter<Ad>  {
 
         viewHolder.imageView.setImageResource(0);
         //viewHolder.imageView.setHeightRatio(positionHeight);
-        viewHolder.tvAdInfo.setText(Html.fromHtml(imageResult.getTitle() + " " + imageResult.getPrice()));
+        viewHolder.tvAdInfo.setText(Html.fromHtml(imageResult.getTitle() + " $" + imageResult.getPrice()));
         viewHolder.tvAdSeller.setText(Html.fromHtml("Seller: " + imageResult.getOwnerName()));
         Picasso.with(getContext()).load(imageResult.getPhotoUrl()).into(viewHolder.imageView);
 

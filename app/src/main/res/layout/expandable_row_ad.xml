@@ -25,14 +25,14 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/gumtree"
+                android:src="@drawable/taptapchat"
                 android:layout_margin="4dp"/>
             <!--
             <ImageView
                 android:id="@+id/ivAdImage"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:src="@drawable/gumtree"
+                android:src="@drawable/taptapchat"
                 android:layout_margin="4dp"/>
                 -->
             <TextView
@@ -90,7 +90,8 @@
             android:layout_height="wrap_content"
             android:textSize="12dp"
             android:layout_marginLeft="8dp"
-            android:textColor="@color/textGray"
+            android:background="@color/offwhite"
+            android:textColor="@color/refreshReplyBlue"
             android:fontFamily="sans-serif-light"
             android:text="Suggested: $20"
             android:layout_alignBottom="@id/adStatusContainer"
@@ -167,7 +168,7 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/gumtree"
+                android:src="@drawable/taptapchat"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_above="@+id/tvRemember2"
@@ -187,7 +188,7 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/gumtree"
+                android:src="@drawable/taptapchat"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_alignBottom="@+id/tvRemember2"

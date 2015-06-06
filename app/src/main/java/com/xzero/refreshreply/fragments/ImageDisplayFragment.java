@@ -54,6 +54,8 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
     private final int REQUEST_CODE = 20;
 
     public int categoryId = 1;
+    public String buyerPrice;
+
 
     private EndlessScrollListener endlessScrollListener = new EndlessScrollListener() {
         @Override
@@ -132,6 +134,9 @@ public class ImageDisplayFragment extends Fragment implements OnRefreshListener 
 
         Log.d("debug", "Fetching ads from remote DB.");
 
+//        if (buyerPrice !=null && buyerPrice.length() > 0) {
+//            query.whereLessThanOrEqualTo("price", buyerPrice);
+//        }
 
         query.whereEqualTo("categoryId", String.valueOf(categoryId));
 

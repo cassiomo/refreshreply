@@ -8,7 +8,7 @@
         android:contentDescription="@string/profile_other"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@drawable/gumtree" />
+        android:src="@drawable/taptapchat" />
     <TextView
         android:textSize="18sp"
         android:id="@+id/tvBody"
@@ -24,5 +24,5 @@
         android:layout_marginLeft="-64dp"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@drawable/gumtree" />
+        android:src="@drawable/taptapchat" />
 </LinearLayout>
