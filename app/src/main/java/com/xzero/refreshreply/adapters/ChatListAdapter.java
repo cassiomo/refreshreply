@@ -37,6 +37,8 @@ public class ChatListAdapter extends ArrayAdapter<Message> {
             final ViewHolder holder = new ViewHolder();
             holder.imageLeft = (ImageView)convertView.findViewById(R.id.ivProfileLeft);
             holder.imageRight = (ImageView)convertView.findViewById(R.id.ivProfileRight);
+            holder.leftName = (TextView) convertView.findViewById(R.id.tvChatLeft);
+            holder.rightName = (TextView) convertView.findViewById(R.id.tvChatRight);
             holder.body = (TextView)convertView.findViewById(R.id.tvBody);
             convertView.setTag(holder);
         }
@@ -49,9 +51,17 @@ public class ChatListAdapter extends ArrayAdapter<Message> {
             holder.imageRight.setVisibility(View.VISIBLE);
             holder.imageLeft.setVisibility(View.GONE);
             holder.body.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+            holder.rightName.setVisibility(View.VISIBLE);
+            holder.rightName.setText(message.getUserName());
+            holder.leftName.setVisibility(View.GONE);
+            holder.leftName.setText("");
         } else {
             holder.imageLeft.setVisibility(View.VISIBLE);
             holder.imageRight.setVisibility(View.GONE);
+            holder.leftName.setVisibility(View.VISIBLE);
+            holder.leftName.setText(message.getUserName());
+            holder.rightName.setVisibility(View.GONE);
+            holder.rightName.setText("");
             holder.body.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
         }
         final ImageView profileView = isMe ? holder.imageRight : holder.imageLeft;
@@ -93,6 +103,8 @@ public class ChatListAdapter extends ArrayAdapter<Message> {
         public ImageView imageLeft;
         public ImageView imageRight;
         public TextView body;
+        public TextView leftName;
+        public TextView rightName;
     }
 
 }

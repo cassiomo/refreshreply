@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.xzero.refreshreply.R;
+import com.xzero.refreshreply.helpers.RoundTransform;
 import com.xzero.refreshreply.models.Ad;
 
 import java.util.List;
@@ -40,13 +41,10 @@ public class ImageResultAdapter extends ArrayAdapter<Ad>  {
         TextView tvAdInfo;
         @InjectView(R.id.tvAdSeller)
         TextView tvAdSeller;
-
-//        @InjectView(R.id.ivImage)
-//        DynamicHeightImageView imageView;
-//        @InjectView(R.id.tvTitle)
-//        TextView tvTitle;
-//        @InjectView(R.id.tvPrice)
-//        TextView tvPrice;
+        @InjectView(R.id.tvAdTitlePrice)
+        TextView tvAdTitlePrice;
+        @InjectView(R.id.ivAdTitleOwnerImage)
+        ImageView ivAdTitleOwnerImage;
 
         public ViewHolder(View view){
             ButterKnife.inject(this, view);
@@ -78,8 +76,14 @@ public class ImageResultAdapter extends ArrayAdapter<Ad>  {
 
         viewHolder.imageView.setImageResource(0);
         //viewHolder.imageView.setHeightRatio(positionHeight);
-        viewHolder.tvAdInfo.setText(Html.fromHtml(imageResult.getTitle() + " $" + imageResult.getPrice()));
-        viewHolder.tvAdSeller.setText(Html.fromHtml("Seller: " + imageResult.getOwnerName()));
+        viewHolder.tvAdInfo.setText(Html.fromHtml(imageResult.getTitle()));
+        viewHolder.tvAdTitlePrice.setText(Html.fromHtml(" $" + imageResult.getPrice()));
+        viewHolder.tvAdSeller.setText(Html.fromHtml(imageResult.getOwnerName()));
+
+        Picasso.with(getContext()).load(ChatListAdapter.getProfilePic(imageResult.getOwnerName()))
+                .error(R.drawable.taptapchat)
+                .transform(new RoundTransform())
+                .into(viewHolder.ivAdTitleOwnerImage);
         Picasso.with(getContext()).load(imageResult.getPhotoUrl()).into(viewHolder.imageView);
 
         return convertView;

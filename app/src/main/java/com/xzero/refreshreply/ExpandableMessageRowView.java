@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 import com.xzero.refreshreply.helpers.GPSTracker;
+import com.xzero.refreshreply.helpers.KeyBoardUtil;
 import com.xzero.refreshreply.models.Ad;
 import com.xzero.refreshreply.notification.LocalAlarmManager;
 import com.xzero.refreshreply.queries.MessageQuery;
@@ -77,7 +79,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
     private ViewGroup detailsContainer;
 
     private ViewGroup detailsChat;
-    private Button btSend;
+    private ImageButton btSend;
     public EditText etMessage;
     private Button btSuggestedPrice;
 
@@ -96,7 +98,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
         detailsChat = (ViewGroup) findViewById(R.id.llSend);
 
-        btSend = (Button) findViewById(R.id.btSend);
+        btSend = (ImageButton) findViewById(R.id.btSend);
         etMessage = (EditText) findViewById(R.id.etMessage);
 
         btSend.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +115,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
         });
 
 
+        KeyBoardUtil.hideKeyboard((Activity)context);
         detailsContainer = (ViewGroup) findViewById(R.id.vgDetailsContainer);
         detailsContainer.setVisibility(View.GONE);
         mtvLocationLabel = (TextView) findViewById(R.id.tvLocationDescription);

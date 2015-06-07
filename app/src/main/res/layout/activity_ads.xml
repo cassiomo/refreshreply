@@ -5,31 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AdList">
-
+<!--
     <ImageView
         android:id="@+id/ivLogo"
         android:contentDescription="@string/profile_me"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:src="@drawable/taptapchat" />
-
+-->
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/slidingTabs"
-        android:layout_marginRight="64dp"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="50dp"
         android:elevation="2dp"
         app:pstsShouldExpand="true"
-        app:pstsIndicatorColor="@android:color/holo_blue_dark"
+        app:pstsIndicatorColor="@color/offwhite"
         app:pstsUnderlineHeight="0dp"
         app:pstsIndicatorHeight="4dp"
-        app:pstsDividerColor="@android:color/holo_blue_dark"
+        app:pstsDividerColor="@android:color/transparent"
         android:textColor="@android:color/holo_blue_dark"
-        android:background="@color/offwhite"
+        android:background="@color/refreshReplyBlue"
         android:fillViewport="false"
-        android:layout_alignBottom="@+id/ivLogo"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/ivLogo" />
+        android:layout_alignParentEnd="true" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/adsViewPager"
@@ -38,7 +36,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true">
     </android.support.v4.view.ViewPager>
-
+<!--
     <ImageView
         android:id="@+id/ibProfile"
         android:contentDescription="@string/profile_other"
@@ -47,5 +45,7 @@
         android:background="@color/offwhite"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
+
+    -->
 
 </RelativeLayout>

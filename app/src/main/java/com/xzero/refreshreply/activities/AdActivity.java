@@ -11,7 +11,6 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -23,13 +22,14 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.squareup.picasso.Picasso;
 import com.xzero.refreshreply.Constant;
 import com.xzero.refreshreply.R;
-import com.xzero.refreshreply.adapters.ChatListAdapter;
 import com.xzero.refreshreply.fragments.ImageDisplayFragment;
 import com.xzero.refreshreply.fragments.MessageFragment;
-import com.xzero.refreshreply.helpers.RoundTransform;
+import com.xzero.refreshreply.fragments.ProfileFragment;
+import com.xzero.refreshreply.fragments.SearchFragment;
+import com.xzero.refreshreply.fragments.SettingFragment;
+import com.xzero.refreshreply.helpers.KeyBoardUtil;
 import com.xzero.refreshreply.listeners.AdListListener;
 import com.xzero.refreshreply.models.Ad;
 
@@ -47,8 +47,8 @@ public class AdActivity extends Activity implements AdListListener{
     @InjectView(R.id.slidingTabs)
     PagerSlidingTabStrip mTabs;
 
-    @InjectView(R.id.ibProfile)
-    ImageView ibProfile;
+//    @InjectView(R.id.ibProfile)
+//    ImageView ibProfile;
 
     private ListAdPagerAdapter mListAdPagerAdapter;
 
@@ -84,13 +84,15 @@ public class AdActivity extends Activity implements AdListListener{
             }
         }
 
-        final ParseUser currentUser = ParseUser.getCurrentUser();
-        String profileUrl = ChatListAdapter.getProfilePic(currentUser.getUsername());
+        KeyBoardUtil.hideKeyboard(this);
 
-        Picasso.with(getApplicationContext()).load(profileUrl)
-                .error(R.drawable.taptapchat)
-                .transform(new RoundTransform())
-                .into(ibProfile);
+//        final ParseUser currentUser = ParseUser.getCurrentUser();
+//        String profileUrl = ChatListAdapter.getProfilePic(currentUser.getUsername());
+//
+//        Picasso.with(getApplicationContext()).load(profileUrl)
+//                .error(R.drawable.taptapchat)
+//                .transform(new RoundTransform())
+//                .into(ibProfile);
 
     }
 
@@ -241,19 +243,28 @@ public class AdActivity extends Activity implements AdListListener{
 
         protected ImageDisplayFragment imageDisplayFragment;
         protected MessageFragment messageFragment;
-        private int tabIcons[] = {R.drawable.homeblue, R.drawable.conversation};
+        protected ProfileFragment profileFragment;
+        protected SearchFragment searchFragment;
+        protected SettingFragment settingFragment;
+        private int tabIcons[] = {R.drawable.home,
+                R.drawable.tranchat,
+                R.drawable.profile,
+                R.drawable.darksearch,
+                R.drawable.post};
 
 
         public ListAdPagerAdapter(FragmentManager fm) {
             super(fm);
-            messageFragment = MessageFragment.newInstance();
             imageDisplayFragment = ImageDisplayFragment.newInstance();
-
+            messageFragment = MessageFragment.newInstance();
+            profileFragment = ProfileFragment.newInstance();
+            searchFragment = SearchFragment.newInstance();
+            settingFragment = SettingFragment.newInstance();
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 5;
         }
 
         @Override
@@ -263,20 +274,32 @@ public class AdActivity extends Activity implements AdListListener{
                     return imageDisplayFragment;
                 case 1:
                     return messageFragment;
+                case 2:
+                    return profileFragment;
+                case 3:
+                    return searchFragment;
+                case 4:
+                    return settingFragment;
             }
             return null;
         }
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "Home";
-                case 1:
-                    return "Conversation";
-            }
-            return super.getPageTitle(position);
-        }
+//        @Override
+//        public CharSequence getPageTitle(int position) {
+//            switch (position) {
+//                case 0:
+//                    return "Home";
+//                case 1:
+//                    return "Conversation";
+//                case 2:
+//                    return "Profile";
+//                case 3:
+//                    return "Search";
+//                case 4:
+//                    return "Setting";
+//            }
+//            return super.getPageTitle(position);
+//        }
 
         @Override
         public int getPageIconResId(int position) {
