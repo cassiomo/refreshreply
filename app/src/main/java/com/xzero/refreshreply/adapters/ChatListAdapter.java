@@ -1,6 +1,7 @@
 package com.xzero.refreshreply.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,12 @@ public class ChatListAdapter extends ArrayAdapter<Message> {
             holder.rightName.setVisibility(View.GONE);
             holder.rightName.setText("");
             holder.body.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
+        }
+
+        if (message.getUserName().equals("june")) {
+            holder.body.setTextColor(Color.parseColor("#ff69b4"));
+        } else {
+            holder.body.setTextColor(Color.parseColor("#21ace3"));
         }
         final ImageView profileView = isMe ? holder.imageRight : holder.imageLeft;
 //        Picasso.with(getContext()).load(getProfileUrl(message.getUserId())).into(profileView);

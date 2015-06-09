@@ -80,7 +80,7 @@ public class MessageFragment extends Fragment {
                 currentInterestedAd.setPrice("$60");
                 currentInterestedAd.setAddress("123123 Blacow Rd Fremont, CA");
                 currentInterestedAd.setDescription("car for sell ");
-                currentInterestedAd.setLocation(new ParseGeoPoint(37.50593151, -121.94696251));
+                currentInterestedAd.setLocation(new ParseGeoPoint(45.505643, -73.557210));
                 currentInterestedAd.setOwnerId("fINhuLpnZw");
                 currentInterestedAd.setTitle("New car");
                 currentInterestedAd.setPhotoUrl("http://3.bp.blogspot.com/-Y6k2hQsaIfY/Thv2bJPhbwI/AAAAAAAAAXw/YeGjaN-2GEM/s400/xasc.png");
@@ -251,12 +251,16 @@ public class MessageFragment extends Fragment {
         if (message !=null) {
             if (message.contains("where")) {
                 adRow.mCondition = 0;
+                adRow.fabStarAd.setImageResource(R.drawable.map);
             } else if (message.contains("when")) {
                 adRow.mCondition = 1;
+                adRow.fabStarAd.setImageResource(R.drawable.time);
             } else if (message.contains("what")) {
                 adRow.mCondition = 2;
+                adRow.fabStarAd.setImageResource(R.drawable.checklist);
             } else if (message.contains("$")) {
                 adRow.mCondition = 3;
+                adRow.fabStarAd.setImageResource(R.drawable.money);
             } else if (message.contains("2015")) {
                 if (!AdActivity.isAlarmSet) {
                     setAlarm(message);

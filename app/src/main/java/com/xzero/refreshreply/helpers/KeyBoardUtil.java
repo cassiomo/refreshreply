@@ -2,7 +2,6 @@ package com.xzero.refreshreply.helpers;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
 /**
@@ -20,7 +19,7 @@ public class KeyBoardUtil
         catch (Exception e)
         {
             // Ignore exceptions if any
-            Log.e("KeyBoardUtil", e.toString(), e);
+            //Log.e("KeyBoardUtil", e.toString(), e);
         }
     }
 }

@@ -22,7 +22,6 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.xzero.refreshreply.R;
 import com.xzero.refreshreply.adapters.ChatListAdapter;
-import com.xzero.refreshreply.helpers.KeyBoardUtil;
 import com.xzero.refreshreply.models.Message;
 
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class ChatActivity extends Activity {
         } else {
             login();
         }
-        KeyBoardUtil.hideKeyboard(this);
+        //KeyBoardUtil.hideKeyboard(this);
         // Run the runnable object defined every 100ms
         handler.postDelayed(runnable, 100);
     }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme.Male" parent="android:Theme.Holo.Light">
+        <item name="imageButtonBackground">@style/male_bg_color</item>
+    </style>
+
+    <style name="Theme.Female" parent="android:Theme.Holo.Light">
+        <item name="imageButtonBackground">@style/female_bg_color</item>
+    </style>
+
+</resources>

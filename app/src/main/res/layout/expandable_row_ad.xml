@@ -91,7 +91,7 @@
             android:id="@+id/btSuggested"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12dp"
+            android:textSize="20dp"
             android:textStyle="bold"
             android:layout_marginLeft="8dp"
             android:background="@color/offwhite"
@@ -237,6 +237,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp">
+
+
         <ImageButton
             android:id="@+id/ibChatHint"
             android:layout_width="56dp"
@@ -246,6 +248,18 @@
             android:stateListAnimator="@anim/button_animator"
             android:scaleType="fitXY"
             android:src="@drawable/ic_star_white_filled"/>
+
+<!--
+        <ImageButton
+            android:id="@+id/ibChatHint"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_centerInParent="true"
+            style="?imageButtonBackground"
+            android:stateListAnimator="@anim/button_animator"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_star_white_filled"/>
+-->
 
         <ImageButton
             android:id="@+id/ibAd"

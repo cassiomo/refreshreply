@@ -16,6 +16,9 @@ import com.xzero.refreshreply.models.Message;
 
 public class ParseApplication extends Application {
 
+    // App level variable to retain selected male/female value
+    public static int currentPosition;
+
 	@Override
 	public void onCreate() {
 

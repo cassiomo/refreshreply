@@ -38,9 +38,9 @@
     -->
 
     <TextView
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:id="@+id/tvBody"
-        android:lines="3"
+        android:lines="4"
         android:textStyle="bold"
         android:layout_marginRight="64dp"
         android:layout_width="match_parent"

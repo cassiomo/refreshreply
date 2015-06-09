@@ -27,7 +27,7 @@
     <string name="default_ad_flavor_text">Part of the MSABI Mkusa School System</string>
     <string name="sort_by">Sort by</string>
     <string name="title">RefreshReply</string>
-    <string name="title_activity_ad_browser">AdBrowserActivity</string>
+    <string name="title_activity_ad_browser">TapTapChat</string>
     <string name="message_hint">type anything</string>
     <string name="send">Send</string>
     <string name="profile_me">My Profile Pic</string>

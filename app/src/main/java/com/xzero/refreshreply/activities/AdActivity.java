@@ -6,6 +6,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -29,7 +31,6 @@ import com.xzero.refreshreply.fragments.MessageFragment;
 import com.xzero.refreshreply.fragments.ProfileFragment;
 import com.xzero.refreshreply.fragments.SearchFragment;
 import com.xzero.refreshreply.fragments.SettingFragment;
-import com.xzero.refreshreply.helpers.KeyBoardUtil;
 import com.xzero.refreshreply.listeners.AdListListener;
 import com.xzero.refreshreply.models.Ad;
 
@@ -84,7 +85,18 @@ public class AdActivity extends Activity implements AdListListener{
             }
         }
 
-        KeyBoardUtil.hideKeyboard(this);
+        String sUserName = ParseUser.getCurrentUser().getUsername();
+        if (sUserName.equals("june")) {
+            Resources res = this.getResources();
+            ColorDrawable drawable = (ColorDrawable)res.getDrawable(R.color.textPink);
+            mTabs.setBackground(drawable);
+        }
+
+        //KeyBoardUtil.hideKeyboard(this);
+
+        // select theme
+        //Utils.onActivityCreateSetTheme(this);
+        //Utils.changeToTheme(AdActivity.this, ParseApplication.currentPosition);
 
 //        final ParseUser currentUser = ParseUser.getCurrentUser();
 //        String profileUrl = ChatListAdapter.getProfilePic(currentUser.getUsername());
@@ -108,7 +120,7 @@ public class AdActivity extends Activity implements AdListListener{
         }
 
         new AlertDialog.Builder(this)
-                .setIcon(R.drawable.taptapchat)
+                .setIcon(getResources().getDrawable(R.drawable.taptapchat))
                 .setTitle(" Meetup with New Car")
                 .setMessage("Did you meet with " + otherPerson + "?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -135,7 +147,7 @@ public class AdActivity extends Activity implements AdListListener{
 
     private void wakupThankyou() {
         new AlertDialog.Builder(this)
-                .setIcon(R.drawable.taptapchat)
+                .setIcon(getResources().getDrawable(R.drawable.taptapchat))
                 .setTitle("Thank you for shopping!")
                 .setMessage("Have a nice day!")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {

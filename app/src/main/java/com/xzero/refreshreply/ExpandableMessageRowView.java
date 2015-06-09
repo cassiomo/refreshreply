@@ -5,7 +5,9 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Html;
@@ -37,7 +39,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
-import com.xzero.refreshreply.helpers.GPSTracker;
 import com.xzero.refreshreply.helpers.KeyBoardUtil;
 import com.xzero.refreshreply.models.Ad;
 import com.xzero.refreshreply.notification.LocalAlarmManager;
@@ -66,7 +67,9 @@ public class ExpandableMessageRowView extends RelativeLayout implements
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
 
-    View fabStarAd;
+    //public View fabStarAd;
+    public ImageButton fabStarAd;
+
     View mNavigationOverlayViewToBeRevealed;
 
     TextView mtvLocationLabel;
@@ -135,7 +138,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
                 String suggestedPrice = btSuggestedPrice.getText().toString();
                 if (suggestedPrice !=null && suggestedPrice.length() > 0) {
 
-                    etMessage.setText(suggestedPrice);
+                    etMessage.setText("Suggested: " + suggestedPrice);
 
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
@@ -216,7 +219,7 @@ public class ExpandableMessageRowView extends RelativeLayout implements
     }
 
     private void setupChatHintButton() {
-        fabStarAd = findViewById(R.id.ibChatHint);
+        fabStarAd = (ImageButton)findViewById(R.id.ibChatHint);
 
         fabStarAd.setOnClickListener(new OnClickListener() {
             @Override
@@ -226,23 +229,31 @@ public class ExpandableMessageRowView extends RelativeLayout implements
 
             }
         });
+
+        String sUserName = ParseUser.getCurrentUser().getUsername();
+        if (sUserName.equals("june")) {
+            Resources res = mContext.getResources();
+            RippleDrawable drawable = (RippleDrawable)res.getDrawable(R.drawable.dark_red_ripple);
+            fabStarAd.setBackground(drawable);
+        }
     }
 
     private void performOnClick() {
         switch (mCondition) {
             // 0 : PlacePicker (where)
             case 0:
-                double lat = 37.3770091;
-                double longitude = 37.3770091;
+                //45.505643, -73.557210
+                double lat = 45.505643;
+                double longitude = -73.557210;
                 LatLng position;
 
-                GPSTracker tracker = new GPSTracker(mContext);
-                if (tracker.canGetLocation() == false) {
-                    tracker.showSettingsAlert();
-                } else {
-                    lat = tracker.getLatitude();
-                    longitude = tracker.getLongitude();
-                }
+//                GPSTracker tracker = new GPSTracker(mContext);
+//                if (tracker.canGetLocation() == false) {
+//                    tracker.showSettingsAlert();
+//                } else {
+//                    lat = tracker.getLatitude();
+//                    longitude = tracker.getLongitude();
+//                }
 
                 LatLng positionTopLeft = new LatLng(lat - MAP_DISPLAY_DELTA, longitude - MAP_DISPLAY_DELTA);
                 LatLng fartherAwayPosition = new LatLng(lat + MAP_DISPLAY_DELTA, longitude + MAP_DISPLAY_DELTA);

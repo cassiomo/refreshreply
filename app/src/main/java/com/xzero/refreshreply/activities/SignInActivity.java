@@ -1,5 +1,6 @@
 package com.xzero.refreshreply.activities;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +9,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -27,7 +27,8 @@ import com.xzero.refreshreply.notification.MyCustomReceiver;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SignInActivity extends ActionBarActivity {
+//public class SignInActivity extends ActionBarActivity {
+public class SignInActivity extends Activity  {
     @InjectView(R.id.etPassword)
     EditText etPassword;
     @InjectView(R.id.etUsername)
@@ -136,6 +137,8 @@ public class SignInActivity extends ActionBarActivity {
             public void done(ParseUser parseUser, ParseException e) {
                 if (parseUser != null) {
                     Log.d("Info", "Current Parse User: " + ParseUser.getCurrentUser().toString());
+
+                    // select theme
                     startActivity(new Intent(getApplicationContext(), AdActivity.class));
                 } else {
                     pbLoading.setVisibility(ProgressBar.INVISIBLE);
@@ -158,6 +161,15 @@ public class SignInActivity extends ActionBarActivity {
             } //done
         });
     }
+
+//    public void selectTheme(ParseUser parseUser, Activity activity) {
+//        if (parseUser.getUsername().equals("june")) {
+//            ParseApplication.currentPosition = 1;
+//        } else {
+//            ParseApplication.currentPosition = 0;
+//        }
+//        Utils.changeToTheme(activity, ParseApplication.currentPosition);
+//    }
 
     private boolean isInvalidInput() {
 
