@@ -4,7 +4,7 @@ Nowsday, marketplace Seller Buyer Communication becomes important. Helping both 
 
 In the following demo: 
 
-On the left side of the seller app and the right side is the buyer app. Buyer searches and browses an ad and click on the ad. A puch notification was sent to the seller and seller reply to the buyer. Both buyer and seller starts to chat about location, time and price of the ad. The chatbot panel at the bottom analyze the chat messages and control button will change accordingly base on locatin, time, and price information. The seller clicks on the icon and know what he/she needs to response to the buyer. This helps the seller speeds up the selling processing. Finally time has come and event will be invoked and both seller and buyer will receive the confirmation to confirm their deal. The seller will finally get the coupon to post new ad and the buyer homepage will change to the new category to show the next potential buy. The buyer homepage also will be changed base on the the final buying status of the deal. 
+On the left side (John) is the seller and the right side (June) is the buyer. June searches and browses an ad and clicks on the ad. A push notification is sent to the John and he replies to the June. Both John and June start a conversation about the ad. The chatbot makes a proper recommandation accordingly base on the conversation between John and June. Finally both John and June agree to sell and buy the item with the help of the chatbot. After the deal is closed between John and Jun, chatbot gives a coupon to John to do the next ad post and also recommands June what to buy next.
 
 
 <IMG SRC="https://github.com/cassiomo/taptapchat/blob/master/taptapchatfinal3.gif?raw=true">
